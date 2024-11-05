@@ -1,13 +1,13 @@
-package com.example.travelogue.ui.dashboard
+package com.example.travelogue.ui.destinations
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class DashboardViewModel : ViewModel() {
+class DestinationsViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+        value = "This is Destinations Fragment"
     }
     val text: LiveData<String> = _text
 }
