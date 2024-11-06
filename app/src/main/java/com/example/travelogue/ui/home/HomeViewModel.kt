@@ -1,29 +1,52 @@
+// HomeViewModel.kt
 package com.example.travelogue.ui.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class HomeViewModel : ViewModel(/* private val repository: TravelogueRepository */) {
+data class JournalEntry(
+    val title: String,
+    val date: String,
+    val location: String,
+    val rating: Float,
+    val thoughts: String
+)
 
-    // When DB is working, add all the DB operations like insert, delete to the view model as methods
-    private val fakeData = arrayListOf(
-        mapOf(
-            "title" to "Trip to Greenland",
-            "date" to "2024-11-10",
-            "location" to "Nuuk, Greenland"
+data class Country(
+    val name: String,
+    val journals: List<JournalEntry>
+)
+
+class HomeViewModel : ViewModel() {
+
+    private val fakeData = listOf(
+        Country(
+            name = "Greenland",
+            journals = listOf(
+                JournalEntry(
+                    title = "Trip to Greenland",
+                    date = "2024-11-10",
+                    location = "Nuuk, Greenland",
+                    rating = 4.5f,
+                    thoughts = "A beautiful icy landscape with friendly locals."
+                )
+            )
         ),
-        mapOf(
-            "title" to "Trip to New York",
-            "date" to "2024-11-15",
-            "location" to "New York, USA"
-        ),
-        mapOf(
-            "title" to "Trip to Italy",
-            "date" to "2024-11-20",
-            "location" to "Rome, Italy"
+        Country(
+            name = "Brazil",
+            journals = listOf(
+                JournalEntry(
+                    title = "Carnival Experience",
+                    date = "2024-02-25",
+                    location = "Rio de Janeiro, Brazil",
+                    rating = 5.0f,
+                    thoughts = "The energy and colors were unforgettable!"
+                )
+            )
         )
     )
 
-    val allJournalEntriesLiveData: LiveData<List<Map<String, String>>> = MutableLiveData(fakeData) // repository.allJournalEntries.asLiveData()
+    private val _countriesLiveData = MutableLiveData<List<Country>>(fakeData)
+    val countriesLiveData: LiveData<List<Country>> get() = _countriesLiveData
 }

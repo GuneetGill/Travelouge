@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:startDestination="@id/navigation_home">
+
+    <!-- Home Fragment -->
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.example.travelogue.ui.home.HomeFragment"
+        android:label="Home" />
+
+    <!-- Destinations Fragment -->
+    <fragment
+        android:id="@+id/navigation_destinations"
+        android:name="com.example.travelogue.ui.destinations.DestinationsFragment"
+        android:label="Destinations" />
+
+    <!-- Map Fragment -->
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.travelogue.ui.map.MapFragment"
+        android:label="Map" />
+
+    <!-- Settings Fragment -->
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.travelogue.ui.settings.SettingsFragment"
+        android:label="Settings" />
+    <fragment
+        android:id="@+id/countryFragment"
+        android:name="com.example.travelogue.ui.home.CountryFragment"
+        android:label="Country" >
+        <action
+            android:id="@+id/action_countryFragment_to_addJournalFragment"
+            app:destination="@id/addJournalFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/tripFragment"
+        android:name="com.example.travelogue.ui.trip.TripFragment">
+    </fragment>
+
+    <fragment
+        android:id="@+id/addJournalFragment"
+        android:name="com.example.travelogue.ui.journal.AddJournalFragment" />
+</navigation>

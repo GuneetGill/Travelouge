@@ -4,4 +4,124 @@
     <string name="title_destinations">Destinations</string>
     <string name="title_settings">Settings</string>
     <string name="title_map">Map</string>
+
+    <string name="select_currency">Select Currency</string>
+
+
+    <string-array name="currency_list">
+        <item>Albania Lek (ALL)</item>
+        <item>Afghanistan Afghani (AFN)</item>
+        <item>Argentina Peso (ARS)</item>
+        <item>Aruba Guilder (AWG)</item>
+        <item>Australia Dollar (AUD)</item>
+        <item>Azerbaijan Manat (AZN)</item>
+        <item>Bahamas Dollar (BSD)</item>
+        <item>Barbados Dollar (BBD)</item>
+        <item>Belarus Ruble (BYN)</item>
+        <item>Belize Dollar (BZD)</item>
+        <item>Bermuda Dollar (BMD)</item>
+        <item>Bolivia Bolíviano (BOB)</item>
+        <item>Bosnia and Herzegovina Convertible Mark (BAM)</item>
+        <item>Botswana Pula (BWP)</item>
+        <item>Bulgaria Lev (BGN)</item>
+        <item>Brazil Real (BRL)</item>
+        <item>Brunei Darussalam Dollar (BND)</item>
+        <item>Cambodia Riel (KHR)</item>
+        <item>Canada Dollar (CAD)</item>
+        <item>Cayman Islands Dollar (KYD)</item>
+        <item>Chile Peso (CLP)</item>
+        <item>China Yuan Renminbi (CNY)</item>
+        <item>Colombia Peso (COP)</item>
+        <item>Costa Rica Colon (CRC)</item>
+        <item>Cuba Peso (CUP)</item>
+        <item>Czech Republic Koruna (CZK)</item>
+        <item>Denmark Krone (DKK)</item>
+        <item>Dominican Republic Peso (DOP)</item>
+        <item>East Caribbean Dollar (XCD)</item>
+        <item>Egypt Pound (EGP)</item>
+        <item>El Salvador Colon (SVC)</item>
+        <item>Euro Member Countries (EUR)</item>
+        <item>Falkland Islands (Malvinas) Pound (FKP)</item>
+        <item>Fiji Dollar (FJD)</item>
+        <item>Ghana Cedi (GHS)</item>
+        <item>Gibraltar Pound (GIP)</item>
+        <item>Guatemala Quetzal (GTQ)</item>
+        <item>Guernsey Pound (GGP)</item>
+        <item>Guyana Dollar (GYD)</item>
+        <item>Honduras Lempira (HNL)</item>
+        <item>Hong Kong Dollar (HKD)</item>
+        <item>Hungary Forint (HUF)</item>
+        <item>Iceland Krona (ISK)</item>
+        <item>India Rupee (INR)</item>
+        <item>Indonesia Rupiah (IDR)</item>
+        <item>Iran Rial (IRR)</item>
+        <item>Isle of Man Pound (IMP)</item>
+        <item>Israel Shekel (ILS)</item>
+        <item>Jamaica Dollar (JMD)</item>
+        <item>Japan Yen (JPY)</item>
+        <item>Jersey Pound (JEP)</item>
+        <item>Kazakhstan Tenge (KZT)</item>
+        <item>Korea (North) Won (KPW)</item>
+        <item>Korea (South) Won (KRW)</item>
+        <item>Kyrgyzstan Som (KGS)</item>
+        <item>Laos Kip (LAK)</item>
+        <item>Lebanon Pound (LBP)</item>
+        <item>Liberia Dollar (LRD)</item>
+        <item>Macedonia Denar (MKD)</item>
+        <item>Malaysia Ringgit (MYR)</item>
+        <item>Mauritius Rupee (MUR)</item>
+        <item>Mexico Peso (MXN)</item>
+        <item>Mongolia Tughrik (MNT)</item>
+        <item>Morocco Dirham (MAD)</item>
+        <item>Mozambique Metical (MZN)</item>
+        <item>Namibia Dollar (NAD)</item>
+        <item>Nepal Rupee (NPR)</item>
+        <item>Netherlands Antilles Guilder (ANG)</item>
+        <item>New Zealand Dollar (NZD)</item>
+        <item>Nicaragua Cordoba (NIO)</item>
+        <item>Nigeria Naira (NGN)</item>
+        <item>Norway Krone (NOK)</item>
+        <item>Oman Rial (OMR)</item>
+        <item>Pakistan Rupee (PKR)</item>
+        <item>Panama Balboa (PAB)</item>
+        <item>Paraguay Guarani (PYG)</item>
+        <item>Peru Sol (PEN)</item>
+        <item>Philippines Peso (PHP)</item>
+        <item>Poland Zloty (PLN)</item>
+        <item>Qatar Riyal (QAR)</item>
+        <item>Romania Leu (RON)</item>
+        <item>Russia Ruble (RUB)</item>
+        <item>Saint Helena Pound (SHP)</item>
+        <item>Saudi Arabia Riyal (SAR)</item>
+        <item>Serbia Dinar (RSD)</item>
+        <item>Seychelles Rupee (SCR)</item>
+        <item>Singapore Dollar (SGD)</item>
+        <item>Solomon Islands Dollar (SBD)</item>
+        <item>Somalia Shilling (SOS)</item>
+        <item>South Korea Won (KRW)</item>
+        <item>South Africa Rand (ZAR)</item>
+        <item>Sri Lanka Rupee (LKR)</item>
+        <item>Sweden Krona (SEK)</item>
+        <item>Switzerland Franc (CHF)</item>
+        <item>Suriname Dollar (SRD)</item>
+        <item>Syria Pound (SYP)</item>
+        <item>Taiwan New Dollar (TWD)</item>
+        <item>Thailand Baht (THB)</item>
+        <item>Trinidad and Tobago Dollar (TTD)</item>
+        <item>Turkey Lira (TRY)</item>
+        <item>Tuvalu Dollar (TVD)</item>
+        <item>Ukraine Hryvnia (UAH)</item>
+        <item>UAE Dirham (AED)</item>
+        <item>United Kingdom Pound (GBP)</item>
+        <item>United States Dollar (USD)</item>
+        <item>Uruguay Peso (UYU)</item>
+        <item>Uzbekistan Som (UZS)</item>
+        <item>Venezuela Bolívar (VEF)</item>
+        <item>Viet Nam Dong (VND)</item>
+        <item>Yemen Rial (YER)</item>
+        <item>Zimbabwe Dollar (ZWL)</item>
+    </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

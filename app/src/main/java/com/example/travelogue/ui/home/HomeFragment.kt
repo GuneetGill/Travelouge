@@ -1,51 +1,51 @@
+// HomeFragment.kt
 package com.example.travelogue.ui.home
 
+import com.example.travelogue.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.travelogue.R
+import androidx.navigation.fragment.findNavController
 import com.example.travelogue.databinding.FragmentHomeBinding
+import com.example.travelogue.ui.home.CountryFragment
+
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var arrayList: ArrayList<Map<String, String>>
-    private lateinit var arrayAdapter: JournalEntriesListAdapter
-    private lateinit var journalEntriesListView: ListView
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var countryAdapter: ArrayAdapter<String>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-        return root
-    }
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        // Observe the LiveData from the ViewModel
+        viewModel.countriesLiveData.observe(viewLifecycleOwner) { countries ->
+            val countryNames = countries.map { it.name }
+            countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, countryNames)
+            binding.countryListView.adapter = countryAdapter
 
-        // set up viewmodel
-        val homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+            // Set item click listener for navigation to CountryFragment
+            binding.countryListView.setOnItemClickListener { _, _, position, _ ->
+                val selectedCountry = countries[position]
 
-        //locate elements
-        journalEntriesListView = view.findViewById(R.id.Journals)
+                // Define the navigation action and navigate to CountryFragment
+                val bundle = Bundle().apply {
+                    putString("countryName", selectedCountry.name)
+                }
+                findNavController().navigate(R.id.countryFragment, bundle)
 
-        // set up list adapter (fake data for now)
-        arrayList = ArrayList()
-        arrayAdapter = JournalEntriesListAdapter(requireActivity(), arrayList)
-        journalEntriesListView.adapter = arrayAdapter
+            }
+        }
 
-        // Update listview if something is added or removed
-        homeViewModel.allJournalEntriesLiveData.observe(requireActivity(), Observer { it ->
-            arrayAdapter.replace(it)
-            arrayAdapter.notifyDataSetChanged()
-        })
+        return binding.root
     }
 
     override fun onDestroyView() {
