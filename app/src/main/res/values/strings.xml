@@ -8,10 +8,6 @@
     <string name="select_currency">Select Currency</string>
 
 
-
-
-
-
     <string-array name="currency_list">
         <item>Albania Lek (ALL)</item>
         <item>Afghanistan Afghani (AFN)</item>
@@ -125,5 +121,7 @@
         <item>Yemen Rial (YER)</item>
         <item>Zimbabwe Dollar (ZWL)</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
