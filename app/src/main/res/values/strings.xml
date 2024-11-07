@@ -1,4 +1,5 @@
 <resources>
+
     <string name="app_name">Travelogue</string>
     <string name="title_home">Journal Entries</string>
     <string name="title_destinations">Destinations</string>
