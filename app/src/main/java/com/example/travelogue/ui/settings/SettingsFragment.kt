@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
 import com.example.travelogue.databinding.FragmentSettingsBinding
-import com.example.travelogue.DocumentsActivity
+import com.example.travelogue.ui.doc.DocumentsActivity
 
 class SettingsFragment : Fragment() {
 
