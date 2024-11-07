@@ -9,23 +9,6 @@
         android:name="com.example.travelogue.ui.home.HomeFragment"
         android:label="Home" />
 
-    <!-- Destinations Fragment -->
-    <fragment
-        android:id="@+id/navigation_destinations"
-        android:name="com.example.travelogue.ui.destinations.DestinationsFragment"
-        android:label="Destinations" />
-
-    <!-- Map Fragment -->
-    <fragment
-        android:id="@+id/navigation_map"
-        android:name="com.example.travelogue.ui.map.MapFragment"
-        android:label="Map" />
-
-    <!-- Settings Fragment -->
-    <fragment
-        android:id="@+id/navigation_settings"
-        android:name="com.example.travelogue.ui.settings.SettingsFragment"
-        android:label="Settings" />
     <fragment
         android:id="@+id/countryFragment"
         android:name="com.example.travelogue.ui.home.CountryFragment"
@@ -43,4 +26,21 @@
     <fragment
         android:id="@+id/addJournalFragment"
         android:name="com.example.travelogue.ui.journal.AddJournalFragment" />
+
+    <fragment
+        android:id="@+id/viewJournalFragment"
+        android:name="com.example.travelogue.ui.home.ViewJournalFragment" />
+
+    <!-- Map Fragment -->
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.travelogue.ui.map.MapFragment"
+        android:label="Map" />
+
+    <!-- Settings Fragment -->
+    <fragment
+        android:id="@+id/navigation_settings"
+        android:name="com.example.travelogue.ui.settings.SettingsFragment"
+        android:label="Settings" />
+
 </navigation>
