@@ -31,6 +31,13 @@
         android:id="@+id/viewJournalFragment"
         android:name="com.example.travelogue.ui.home.ViewJournalFragment" />
 
+    <!-- ExpenseFragment -->
+    <fragment
+        android:id="@+id/ExpenseFragment"
+        android:name="com.example.travelogue.ui.home.ExpenseFragment"
+        android:label="Expense Fragment" />
+
+
     <!-- Map Fragment -->
     <fragment
         android:id="@+id/navigation_map"

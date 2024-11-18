@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.androidx.material3.android)
     implementation ("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation ("androidx.navigation:navigation-ui-ktx:2.6.0")
+    implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("ir.mahozad.android:pie-chart:0.7.0")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
