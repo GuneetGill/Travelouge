@@ -2,6 +2,7 @@
 package com.example.travelogue.ui.home
 import com.example.travelogue.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,6 +47,19 @@ class CountryFragment : Fragment() {
             binding.addJournalButton.setOnClickListener {
                 findNavController().navigate(R.id.action_countryFragment_to_addJournalFragment)
             }
+        }
+
+        // set on click for journal item in listview
+        binding.journalListView.setOnItemClickListener { adapterView, view, position, l ->
+            // once database is working you would probably pass the journal ID to the fragment so it can retrieve the right journal
+            val selectedJournal = adapterView.getItemAtPosition(position).toString()
+
+            // for now, pass journalTitle to viewJournalFragment
+            val bundle = Bundle().apply {
+                putString("journalTitle", selectedJournal)
+            }
+
+            findNavController().navigate(R.id.viewJournalFragment, bundle)
         }
     }
 
