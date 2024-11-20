@@ -11,6 +11,7 @@ class UserViewModel(private val repository: UserRepository) : ViewModel() {
         repository.insertUser(user)
     }
 
+
 }
 
 class UserViewModelFactory (private val repository: UserRepository) : ViewModelProvider.Factory {

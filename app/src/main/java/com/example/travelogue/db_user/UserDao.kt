@@ -15,9 +15,5 @@ interface UserDao {
     @Query("SELECT * FROM user_table")
     fun getAllUsers(): Flow<List<User>>
 
-//    @Query("DELETE FROM folder_table")
-//    suspend fun deleteAll()
-//
-//    @Query("DELETE FROM folder_table WHERE folder_id = :key") //":" indicates that it is a Bind variable
-//    suspend fun deleteFolder(key: Long)
+
 }
