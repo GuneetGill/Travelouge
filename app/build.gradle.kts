@@ -58,6 +58,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.play.services.maps)
 
+    implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("ir.mahozad.android:pie-chart:0.7.0")
+
 
     val room_version = "2.6.0"
     val lifecycle_version = "2.6.2"
