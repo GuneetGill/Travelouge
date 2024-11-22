@@ -12,21 +12,11 @@ class UserRepository(private val userDao: UserDao) {
 
     val allComments: Flow<List<User>> = userDao.getAllUsers()
 
-    fun insertUser(user: User){
-        CoroutineScope(IO).launch{
+    fun insertUser(user: User) {
+        CoroutineScope(IO).launch {
             userDao.insertUser(user)
         }
     }
 
-//    fun delete(id: Long){
-//        CoroutineScope(IO).launch {
-//            folderDao.deleteTravel(id)
-//        }
-//    }
-//
-//    fun deleteAll(){
-//        CoroutineScope(IO).launch {
-//            folderDao.deleteAll()
-//        }
-//    }
+
 }

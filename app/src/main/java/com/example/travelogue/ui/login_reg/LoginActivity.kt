@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -20,10 +21,10 @@ import com.example.travelogue.db_user.UserViewModelFactory
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var usernameEmail : EditText
-    private lateinit var password : EditText
-    private lateinit var loginButton : Button
-    private lateinit var regButton : Button
+    private lateinit var usernameEmail: EditText
+    private lateinit var password: EditText
+    private lateinit var loginButton: Button
+    private lateinit var regButton: Button
 
     private lateinit var database: UserDatabase
     private lateinit var databaseDao: UserDao
@@ -61,9 +62,28 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+
         loginButton.setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            val usernameOrEmail = usernameEmail.text.toString()
+            val userPassword = password.text.toString()
+            var isUserFound = false
+            userViewModel.allTravelsLiveData.observe(this) { users ->
+                if (users.isNotEmpty()) {
+                    users.forEach { user ->
+                        if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail) && user.userPassword == userPassword) {
+                            isUserFound = true
+                        }
+                    }
+                }
+            }
+
+            if(isUserFound) {
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         regButton.setOnClickListener {
