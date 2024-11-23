@@ -9,24 +9,27 @@
 
 
     <!-- Profile Picture -->
-    <ImageView
-        android:id="@+id/image_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
-        android:src="@drawable/ic_profile_placeholder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
 
     <!-- Name -->
+    <ImageView
+        android:id="@+id/image_profile"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/logo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <EditText
         android:id="@+id/editText_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:hint="Name"
+        android:hint="UserName"
         app:layout_constraintStart_toEndOf="@id/image_profile"
         app:layout_constraintTop_toTopOf="@id/image_profile"
         app:layout_constraintEnd_toEndOf="parent" />
