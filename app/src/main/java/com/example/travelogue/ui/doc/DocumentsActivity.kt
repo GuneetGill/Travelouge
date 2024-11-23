@@ -22,6 +22,7 @@ import com.example.travelogue.db.TravelogueViewModelFactory
 
 class DocumentsActivity : AppCompatActivity() {
     private lateinit var addFolderButton : Button
+    private lateinit var returnButton : Button
     private lateinit var database: TravelogueDatabase
     private lateinit var databaseDao: FolderDao
     private lateinit var repository: FolderRepository
@@ -70,6 +71,13 @@ class DocumentsActivity : AppCompatActivity() {
             val intent = Intent(this, FolderActivity::class.java)
             startActivity(intent)
         }
+
+        returnButton = findViewById(R.id.return_button)
+        returnButton.setOnClickListener {
+            finish()
+        }
+
+
 
     }
 }
