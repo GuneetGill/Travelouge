@@ -10,8 +10,6 @@
 
     <!-- Profile Picture -->
 
-
-    <!-- Name -->
     <ImageView
         android:id="@+id/image_profile"
         android:layout_width="150dp"
@@ -23,53 +21,53 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/editText_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="UserName"
-        app:layout_constraintStart_toEndOf="@id/image_profile"
-        app:layout_constraintTop_toTopOf="@id/image_profile"
-        app:layout_constraintEnd_toEndOf="parent" />
-
 
     <!-- Email -->
-    <EditText
-        android:id="@+id/editText_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintStart_toEndOf="@id/image_profile"
-        app:layout_constraintTop_toBottomOf="@id/editText_name"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
-    <!-- Password -->
-    <EditText
-        android:id="@+id/editText_password"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toEndOf="@id/image_profile"
-        app:layout_constraintTop_toBottomOf="@id/editText_email"
-        app:layout_constraintEnd_toEndOf="parent" />
     <!-- Change Button -->
+    <TextView
+        android:id="@+id/FLname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:hint="FirstName LastName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/image_profile"
+        app:layout_constraintTop_toTopOf="@id/image_profile" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="UserName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/image_profile"
+        app:layout_constraintTop_toBottomOf="@id/FLname" />
+
     <Button
         android:id="@+id/button_change"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="52dp"
         android:text="Change"
+
+        app:layout_constraintTop_toBottomOf="@id/image_profile"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/resetP_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="52dp"
+        android:text="Reset Password"
         app:layout_constraintTop_toBottomOf="@id/image_profile"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
