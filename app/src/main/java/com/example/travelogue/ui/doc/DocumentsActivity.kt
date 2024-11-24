@@ -20,15 +20,11 @@ import com.example.travelogue.table_folder.FolderRepository
 import com.example.travelogue.table_folder.FolderViewModel
 import com.example.travelogue.table_folder.FolderViewModelFactory
 
-//import com.example.travelogue.db.TravelogueDatabase
-//import com.example.travelogue.db.FolderDao
-//import com.example.travelogue.db.FolderRepository
-//import com.example.travelogue.db.TravelogueViewModel
-//import com.example.travelogue.db.TravelogueViewModelFactory
 
 class DocumentsActivity : AppCompatActivity() {
-    private lateinit var addFolderButton : Button
-    private lateinit var database: UserDatabase
+    private lateinit var addFolderButton: Button
+    private lateinit var returnButton: Button  // Define returnButton as needed
+    private lateinit var database: UserDatabase  // Ensure the right database type is being used
     private lateinit var databaseDao: FolderDao
     private lateinit var repository: FolderRepository
     private lateinit var viewModelFactory: FolderViewModelFactory
@@ -36,6 +32,10 @@ class DocumentsActivity : AppCompatActivity() {
     private lateinit var arrayList: ArrayList<Folder>
     private lateinit var arrayAdapter: DocFolderListAdapter
     private lateinit var gridView: GridView
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_documents)
