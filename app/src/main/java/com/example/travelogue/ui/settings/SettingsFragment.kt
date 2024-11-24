@@ -72,6 +72,11 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        // In onCreateView, set up the Change button click listener
+        binding.buttonChange.setOnClickListener {
+            showChangeNameDialog()
+        }
+
         return root
     }
 
@@ -115,4 +120,38 @@ class SettingsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+    // Inside SettingsFragment class
+
+    private fun showChangeNameDialog() {
+        // Inflate the custom layout for the dialog
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_change_settings, null)
+        val editTextFirstName = dialogView.findViewById<EditText>(R.id.editText_first_name)
+        val editTextLastName = dialogView.findViewById<EditText>(R.id.editText_last_name)
+        val editTextUsername = dialogView.findViewById<EditText>(R.id.editText_username)
+
+        // Build and show the dialog
+        AlertDialog.Builder(requireContext())
+            .setTitle("Change Name and Username")
+            .setView(dialogView)
+            .setPositiveButton("Save") { _, _ ->
+                val firstName = editTextFirstName.text.toString().trim()
+                val lastName = editTextLastName.text.toString().trim()
+                val username = editTextUsername.text.toString().trim()
+
+                if (firstName.isNotEmpty() && lastName.isNotEmpty() && username.isNotEmpty()) {
+                    binding.FLname.text = "$firstName $lastName"
+                    binding.userName.text = username
+                    Toast.makeText(context, "Name and username updated!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
+
+
 }
