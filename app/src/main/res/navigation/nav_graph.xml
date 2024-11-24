@@ -7,15 +7,21 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.example.travelogue.ui.home.HomeFragment"
-        android:label="Home" />
+        android:label="Home" >
+        <action
+            android:id="@+id/action_homeFragment_to_addCountryFragment"
+            app:destination="@id/addCountryFragment"
+            android:label="Add Country"/>
+    </fragment>
 
     <fragment
         android:id="@+id/countryFragment"
         android:name="com.example.travelogue.ui.home.CountryFragment"
-        android:label="Country" >
+        android:label="Journals" >
         <action
             android:id="@+id/action_countryFragment_to_addJournalFragment"
-            app:destination="@id/addJournalFragment" />
+            app:destination="@id/addJournalFragment"
+            android:label="Add Journal"/>
     </fragment>
 
     <fragment
@@ -26,6 +32,12 @@
     <fragment
         android:id="@+id/addJournalFragment"
         android:name="com.example.travelogue.ui.journal.AddJournalFragment" />
+
+    <fragment
+        android:id="@+id/addCountryFragment"
+        android:name="com.example.travelogue.ui.home.AddCountryFragment"
+        android:label="Add Country" />
+
 
     <fragment
         android:id="@+id/viewJournalFragment"
