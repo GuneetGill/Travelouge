@@ -23,7 +23,6 @@ import com.example.travelogue.table_folder.FolderViewModelFactory
 
 class DocumentsActivity : AppCompatActivity() {
     private lateinit var addFolderButton: Button
-    private lateinit var returnButton: Button  // Define returnButton as needed
     private lateinit var database: UserDatabase  // Ensure the right database type is being used
     private lateinit var databaseDao: FolderDao
     private lateinit var repository: FolderRepository
@@ -63,11 +62,6 @@ class DocumentsActivity : AppCompatActivity() {
             arrayAdapter.notifyDataSetChanged()
         })
 
-//        viewModel.getFolderByUser(userId).observe(this, Observer { folder ->
-//            arrayAdapter.replace(folder)
-//            arrayAdapter.notifyDataSetChanged()
-//        })
-
         addFolderButton = findViewById(R.id.add_folder_button)
 
         addFolderButton.setOnClickListener {
@@ -86,21 +80,6 @@ class DocumentsActivity : AppCompatActivity() {
             val intent = Intent(this, FolderActivity::class.java)
             startActivity(intent)
         }
-
-
-//        viewModel.allFoldersLiveData.observe(this, Observer { folders ->
-//            if (folders.isNotEmpty()) {
-//                // Log each folder individually
-//                folders.forEach { folder ->
-//                    Log.d("DocumentsActivitye", "Folder ID: ${folder.folder_id}, Folder Name: ${folder.folderName}, User Owner ID: ${folder.userOwnerId}, Created At: ${folder.createdAt}")
-//                }
-//            } else {
-//                Log.d("DocumentsActivity", "No folders found in the database.")
-//            }
-//
-//            arrayAdapter.replace(folders)
-//            arrayAdapter.notifyDataSetChanged()
-//        })
 
     }
 }
