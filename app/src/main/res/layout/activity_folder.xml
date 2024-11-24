@@ -8,32 +8,11 @@
     android:orientation="vertical"
     tools:context=".ui.doc.FolderActivity">
 
-    <ImageView
-        android:id="@+id/dynamic_image_view"
-        android:layout_width="184dp"
-        android:layout_height="189dp"
-        android:src="@drawable/id_sample"
-        android:layout_gravity="center"
-        />
-
-    <TextView
-        android:layout_width="wrap_content"
+    <GridView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Scanned Doc Title" />
-
-    <ImageView
-
-        android:layout_width="184dp"
-        android:layout_height="189dp"
-        android:layout_gravity="center"
-        android:src="@drawable/boarding_pass_sample" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Scanned Doc Title" />
+        android:id="@+id/doc_gv"
+        android:numColumns="3"/>
 
 
     <!-- Horizontal LinearLayout for buttons -->

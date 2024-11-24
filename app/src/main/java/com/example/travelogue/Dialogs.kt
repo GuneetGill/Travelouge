@@ -14,11 +14,11 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.db_user.UserDatabase
-import com.example.travelogue.table_folder.Folder
-import com.example.travelogue.table_folder.FolderDao
-import com.example.travelogue.table_folder.FolderRepository
-import com.example.travelogue.table_folder.FolderViewModel
-import com.example.travelogue.table_folder.FolderViewModelFactory
+import com.example.travelogue.folder_table.Folder
+import com.example.travelogue.folder_table.FolderDao
+import com.example.travelogue.folder_table.FolderRepository
+import com.example.travelogue.folder_table.FolderViewModel
+import com.example.travelogue.folder_table.FolderViewModelFactory
 
 
 class Dialogs : DialogFragment(), DialogInterface.OnClickListener {
