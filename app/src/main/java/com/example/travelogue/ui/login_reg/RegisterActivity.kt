@@ -5,14 +5,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
-import com.example.travelogue.db.FolderRepository
-import com.example.travelogue.db.TravelogueDatabase
-import com.example.travelogue.db.TravelogueViewModel
-import com.example.travelogue.db.TravelogueViewModelFactory
+
 import com.example.travelogue.db_user.User
 import com.example.travelogue.db_user.UserDao
 import com.example.travelogue.db_user.UserDatabase

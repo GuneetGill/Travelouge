@@ -10,13 +10,12 @@ import kotlinx.coroutines.launch
 // deciding whether to fetch data from a network or use results cached in a local database.
 class UserRepository(private val userDao: UserDao) {
 
-    val allComments: Flow<List<User>> = userDao.getAllUsers()
+    val allUsers: Flow<List<User>> = userDao.getAllUsers()
 
     fun insertUser(user: User) {
         CoroutineScope(IO).launch {
             userDao.insertUser(user)
         }
     }
-
 
 }

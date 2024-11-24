@@ -1,55 +1,66 @@
 package com.example.travelogue.ui.doc
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.GridView
-import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.Dialogs
+import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.R
-import com.example.travelogue.db.Folder
-import com.example.travelogue.db.TravelogueDatabase
-import com.example.travelogue.db.FolderDao
-import com.example.travelogue.db.FolderRepository
-import com.example.travelogue.db.TravelogueViewModel
-import com.example.travelogue.db.TravelogueViewModelFactory
+import com.example.travelogue.db_user.UserDatabase
+import com.example.travelogue.table_folder.Folder
+import com.example.travelogue.table_folder.FolderDao
+import com.example.travelogue.table_folder.FolderRepository
+import com.example.travelogue.table_folder.FolderViewModel
+import com.example.travelogue.table_folder.FolderViewModelFactory
+
 
 class DocumentsActivity : AppCompatActivity() {
-    private lateinit var addFolderButton : Button
-    private lateinit var returnButton : Button
-    private lateinit var database: TravelogueDatabase
+    private lateinit var addFolderButton: Button
+    private lateinit var database: UserDatabase  // Ensure the right database type is being used
     private lateinit var databaseDao: FolderDao
     private lateinit var repository: FolderRepository
-    private lateinit var viewModelFactory: TravelogueViewModelFactory
-    private lateinit var travelogueViewModel: TravelogueViewModel
+    private lateinit var viewModelFactory: FolderViewModelFactory
+    private lateinit var viewModel: FolderViewModel
     private lateinit var arrayList: ArrayList<Folder>
     private lateinit var arrayAdapter: DocFolderListAdapter
     private lateinit var gridView: GridView
+    private lateinit var returnButton: Button
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_documents)
 
+        returnButton = findViewById(R.id.return_button)
+
+        //userid
+        val sharedPreferences: SharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        val userId = sharedPreferences.getLong("user_id", -1)
+
         gridView = findViewById(R.id.folder_gv)
         //db initialize
-        database = TravelogueDatabase.getInstance(this)
+        database = UserDatabase.getInstance(this)
         databaseDao = database.folderDao
         repository = FolderRepository(databaseDao)
-        viewModelFactory = TravelogueViewModelFactory(repository)
-        travelogueViewModel =
-            ViewModelProvider(this, viewModelFactory).get(TravelogueViewModel::class.java)
+        viewModelFactory = FolderViewModelFactory(repository)
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(FolderViewModel::class.java)
 
         arrayList = ArrayList()
         arrayAdapter = DocFolderListAdapter(this, arrayList)
         gridView.adapter = arrayAdapter
 
-        travelogueViewModel.allTravelsLiveData.observe(this, Observer { travel ->
-            arrayAdapter.replace(travel)
+        viewModel.allFoldersLiveData.observe(this, Observer { folders ->
+            val filteredFolders = folders.filter { it.userOwnerId == userId }
+            arrayAdapter.replace(filteredFolders)
             arrayAdapter.notifyDataSetChanged()
         })
 
@@ -72,12 +83,9 @@ class DocumentsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        returnButton = findViewById(R.id.return_button)
         returnButton.setOnClickListener {
             finish()
         }
-
-
 
     }
 }

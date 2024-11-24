@@ -5,7 +5,7 @@ import java.lang.IllegalArgumentException
 
 
 class UserViewModel(private val repository: UserRepository) : ViewModel() {
-    val allTravelsLiveData: LiveData<List<User>> = repository.allComments.asLiveData()
+    val allUsersLiveData: LiveData<List<User>> = repository.allUsers.asLiveData()
 
     fun insertUser(user: User) {
         repository.insertUser(user)

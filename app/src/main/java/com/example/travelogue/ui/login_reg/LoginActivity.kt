@@ -1,6 +1,7 @@
 package com.example.travelogue.ui.login_reg
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.MainActivity
 import com.example.travelogue.R
 import com.example.travelogue.db_user.UserDao
@@ -52,7 +54,7 @@ class LoginActivity : AppCompatActivity() {
             ViewModelProvider(this, viewModelFactory).get(UserViewModel::class.java)
 
         //display users in log cat
-        userViewModel.allTravelsLiveData.observe(this) { users ->
+        userViewModel.allUsersLiveData.observe(this) { users ->
             if (users.isNotEmpty()) {
                 users.forEach { user ->
                     Log.d("LoginActivity", "User : $user")
@@ -68,17 +70,26 @@ class LoginActivity : AppCompatActivity() {
             val usernameOrEmail = usernameEmail.text.toString()
             val userPassword = password.text.toString()
             var isUserFound = false
-            userViewModel.allTravelsLiveData.observe(this) { users ->
+            var userId = -1L
+            userViewModel.allUsersLiveData.observe(this) { users ->
                 if (users.isNotEmpty()) {
                     users.forEach { user ->
                         if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail) && user.userPassword == userPassword) {
                             isUserFound = true
+                            userId = user.userId
                         }
                     }
                 }
             }
 
             if(isUserFound) {
+                //share user id across the app
+                val sharedPreferences: SharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.clear()
+                editor.putLong("user_id", userId)
+                Log.d("myuserid", "User : $userId")
+                editor.commit()
                 startActivity(intent)
             } else {
                 Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show()

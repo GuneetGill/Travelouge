@@ -3,18 +3,23 @@ package com.example.travelogue
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.travelogue.db.Folder
-import com.example.travelogue.db.TravelogueDatabase
-import com.example.travelogue.db.FolderDao
-import com.example.travelogue.db.FolderRepository
-import com.example.travelogue.db.TravelogueViewModel
-import com.example.travelogue.db.TravelogueViewModelFactory
+import com.example.travelogue.Globals.PREF_NAME
+import com.example.travelogue.db_user.UserDatabase
+import com.example.travelogue.table_folder.Folder
+import com.example.travelogue.table_folder.FolderDao
+import com.example.travelogue.table_folder.FolderRepository
+import com.example.travelogue.table_folder.FolderViewModel
+import com.example.travelogue.table_folder.FolderViewModelFactory
+
 
 class Dialogs : DialogFragment(), DialogInterface.OnClickListener {
     companion object {
@@ -22,28 +27,31 @@ class Dialogs : DialogFragment(), DialogInterface.OnClickListener {
         const val DOC_VAL = 1
     }
 
-    private lateinit var database: TravelogueDatabase
+    private lateinit var database: UserDatabase
     private lateinit var databaseDao: FolderDao
     private lateinit var repository: FolderRepository
-    private lateinit var viewModelFactory: TravelogueViewModelFactory
-    private lateinit var travelogueViewModel: TravelogueViewModel
-
+    private lateinit var viewModelFactory: FolderViewModelFactory
+    private lateinit var viewModel: FolderViewModel
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         lateinit var ret: Dialog
         val bundle = arguments
         val dialogId = bundle?.getInt(DOC_KEY)
+        //get userId
 
-        //db initialize
-        database = TravelogueDatabase.getInstance(requireContext())
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+        val userId = sharedPreferences.getLong("user_id", -1)
+//        //db initialize
+        database = UserDatabase.getInstance(requireContext())
         databaseDao = database.folderDao
         repository = FolderRepository(databaseDao)
-        viewModelFactory = TravelogueViewModelFactory(repository)
-        travelogueViewModel =
-            ViewModelProvider(this, viewModelFactory).get(TravelogueViewModel::class.java)
-        //travel object
+        viewModelFactory = FolderViewModelFactory(repository)
+        viewModel =
+            ViewModelProvider(this, viewModelFactory).get(FolderViewModel::class.java)
+//        //travel object
         val folder = Folder()
 
         if (dialogId == DOC_VAL) {
+            Log.d("myuserid", "User : $userId")
             val builder = AlertDialog.Builder(requireActivity())
             val view: View = requireActivity().layoutInflater.inflate(
                 R.layout.fragment_doc_dialog,
@@ -56,7 +64,8 @@ class Dialogs : DialogFragment(), DialogInterface.OnClickListener {
             builder.setPositiveButton("OK") { dialog, _ ->
                 val folderName = getFolderName.text.toString()
                 folder.folderName = folderName
-                travelogueViewModel.insertFolder(folder)
+                folder.userOwnerId = userId
+                viewModel.insertFolder(folder)
 //                Toast.makeText(activity, folderName, Toast.LENGTH_LONG).show()
             }
             builder.setNegativeButton("cancel", this)
