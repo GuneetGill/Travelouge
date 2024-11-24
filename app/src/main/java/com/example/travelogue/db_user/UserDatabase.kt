@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.travelogue.table_folder.Folder
+import com.example.travelogue.table_folder.FolderDao
 
-@Database(entities = [User::class], version = 1)
+@Database(entities = [User::class, Folder::class], version = 2)
 abstract class UserDatabase :
     RoomDatabase() {
     abstract val userDao: UserDao
+    abstract val folderDao : FolderDao
+
 
     companion object {
         //The Volatile keyword guarantees visibility of changes to the INSTANCE variable across threads
