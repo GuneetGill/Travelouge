@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,6 +22,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var countryAdapter: ArrayAdapter<String>
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
@@ -43,6 +45,10 @@ class HomeFragment : Fragment() {
                 findNavController().navigate(R.id.countryFragment, bundle)
 
             }
+        }
+
+        binding.addCountry.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_addCountryFragment)
         }
 
         return binding.root
