@@ -44,7 +44,7 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
         val btnAddPhotos = view.findViewById<Button>(R.id.btnAddPhotos)
         val currentDate = getCurrentDate()
-        journalDao = UserDatabase.getInstance(requireContext()).journalDao()
+        //journalDao = UserDatabase.getInstance(requireContext())
         // Initialize activity result handlers
         initActivityResultHandlers()
 
