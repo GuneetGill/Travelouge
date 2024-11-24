@@ -59,6 +59,7 @@ class HomeFragment : Fragment() {
                 // Define the navigation action and navigate to CountryFragment
                 val bundle = Bundle().apply {
                     putString("countryName", selectedCountry.countryName)
+                    putLong("countryID", selectedCountry.country_id)
                 }
                 findNavController().navigate(R.id.countryFragment, bundle)
 

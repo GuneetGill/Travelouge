@@ -16,11 +16,17 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.travelogue.R
+import com.example.travelogue.Util
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.table_journal.Journal
 import com.example.travelogue.table_journal.JournalDao
+import com.example.travelogue.table_journal.JournalRepository
+import com.example.travelogue.table_journal.JournalViewModel
+import com.example.travelogue.table_journal.JournalViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -30,11 +36,15 @@ import java.util.Locale
 
 class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
 
-    private lateinit var journalDao: JournalDao
     private var photoUri: Uri? = null
-    private val selectedCountryId: Long = 1
     private lateinit var cameraResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var galleryResultLauncher: ActivityResultLauncher<String>
+
+    private lateinit var database: UserDatabase
+    private lateinit var databaseDao: JournalDao
+    private lateinit var repository: JournalRepository
+    private lateinit var viewModelFactory: JournalViewModelFactory
+    private lateinit var journalViewModel: JournalViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,8 +53,20 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
         val editTextThoughts = view.findViewById<EditText>(R.id.editTextThoughts)
         val btnSubmit = view.findViewById<Button>(R.id.btnSubmit)
         val btnAddPhotos = view.findViewById<Button>(R.id.btnAddPhotos)
+        val editJournalTitle = view.findViewById<EditText>(R.id.editJournalTitle)
         val currentDate = getCurrentDate()
-        //journalDao = UserDatabase.getInstance(requireContext())
+
+        // Initialize for DB interaction
+        database = UserDatabase.getInstance(requireActivity())
+        databaseDao = database.journalDao
+        repository = JournalRepository(databaseDao)
+        viewModelFactory = JournalViewModelFactory(repository)
+        journalViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(JournalViewModel::class.java)
+
+        // Get countryID
+        val countryName = arguments?.getString("countryName")
+        val countryID = arguments?.getLong("countryID")
+
         // Initialize activity result handlers
         initActivityResultHandlers()
 
@@ -61,8 +83,8 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
             } else {
                 // Save the journal to the database
                 val journal = Journal(
-                    countryId = selectedCountryId,
-                    title = "My Journal Entry", // Replace with a title field if available
+                    countryId = countryID!!,
+                    title = editJournalTitle.text.toString(),
                     content = thoughts,
                     rating = rating,
                     date = currentDate,
@@ -70,12 +92,14 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
                 )
 
                 // Insert into database using a coroutine
-                lifecycleScope.launch(Dispatchers.IO) {
-                    journalDao.insertJournal(journal)
-                    launch(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Journal saved!", Toast.LENGTH_SHORT).show()
-                    }
+                journalViewModel.addJournal(journal)
+                Toast.makeText(requireContext(), "Journal Added", Toast.LENGTH_SHORT).show()
+                // Go back to country fragment
+                val bundle = Bundle().apply {
+                    putLong("countryID", countryID)
+                    putString("countryName", countryName)
                 }
+                findNavController().navigate(R.id.countryFragment, bundle)
             }
         }
         //btnAddExpense.setOnClickListener {
@@ -112,6 +136,8 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
 
     private fun showImagePickerDialog() {
         val options = arrayOf("Take a Photo", "Choose from Files")
+        // check permissions first
+        Util.checkPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE))
         AlertDialog.Builder(requireContext())
             .setTitle("Add Image")
             .setItems(options) { _, which ->

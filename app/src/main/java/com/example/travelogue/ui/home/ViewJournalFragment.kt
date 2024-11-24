@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.example.travelogue.R
 import androidx.navigation.fragment.findNavController
 
@@ -30,22 +31,33 @@ class ViewJournalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // get all the journal data
+        val journalTitle = arguments?.getString("title")
+        val journalRating = arguments?.getFloat("rating")
+        val journalContent = arguments?.getString("content")
+        val journalPhotoUri = arguments?.getString("photoUri")
+
+
         // set title of toolbar to journal title
-        val journalTitle = arguments?.getString("journalTitle")
         (activity as? AppCompatActivity)?.supportActionBar?.title = journalTitle
 
         // set img
         val imageView = view.findViewById<ImageView>(R.id.journalImg)
-        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
+//        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
+        imageView.setImageURI(journalPhotoUri!!.toUri())
 
         // set star rating
         val rating = view.findViewById<RatingBar>(R.id.JournalRating)
-        rating.rating = 3.0f
+        if (journalRating != null) {
+            rating.rating = journalRating
+        }
+        else {
+            rating.rating = 0f
+        }
 
         // set description
         val descriptionTextView = view.findViewById<TextView>(R.id.desciption)
-        descriptionTextView.text =
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+        descriptionTextView.text = journalContent
 
         // Set onclick for expenses button
         val expensesButton = view.findViewById<Button>(R.id.button)

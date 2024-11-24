@@ -100,7 +100,9 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
                 // Detect if the text is cleared
                 if (s.isNullOrEmpty()) {
                     // Handle the clear button press event
-                    mMap.clear()
+                    if (::mMap.isInitialized) {
+                        mMap.clear()
+                    }
                     latlng = null
                 }
             }
