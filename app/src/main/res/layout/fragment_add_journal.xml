@@ -28,20 +28,10 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:id="@+id/btnRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Rate your trip"
-        android:backgroundTint="#D3D3D3"
-        android:textColor="#000000"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp" />
-
-    <Button
         android:id="@+id/btnAddPhotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Photos and videos"
+        android:text="Add Photos and Videos"
         android:backgroundTint="#D3D3D3"
         android:textColor="#000000"
         android:layout_gravity="center_horizontal"
@@ -69,6 +59,17 @@
         android:text="Submit"
         android:backgroundTint="#80726C"
         android:textColor="#FFFFFF"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp" />
+
+    <!-- New Add Expense Button -->
+    <Button
+        android:id="@+id/btnAddExpense"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Expense"
+        android:backgroundTint="#D3D3D3"
+        android:textColor="#000000"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp" />
 </LinearLayout>
