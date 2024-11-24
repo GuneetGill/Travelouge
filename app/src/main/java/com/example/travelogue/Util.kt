@@ -5,6 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import java.util.Locale
 
 object Util {
+    // Geocoding stuff
     fun getCountryName(context: Context, latlng: LatLng): String? {
         val geocoder = Geocoder(context, Locale.getDefault())
         return try {

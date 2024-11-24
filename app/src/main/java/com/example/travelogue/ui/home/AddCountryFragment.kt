@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.widget.addTextChangedListener
+import androidx.navigation.fragment.findNavController
 import com.example.travelogue.R
 import com.example.travelogue.Util
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -93,7 +94,10 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
         // onclick for save
         view.findViewById<Button>(R.id.saveBtn).setOnClickListener {
             if (latlng != null) {
-                // save latlng in database
+                // SAVE LATLNG TO DATABASE
+
+                // Go back to countries list / home page
+                findNavController().navigate(R.id.navigation_home)
             } else {
                 // somehow prompt user to enter input
                 autocompleteFragment.setText("")
