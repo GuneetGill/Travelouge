@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.travelogue.table_country.Country
 import com.example.travelogue.table_country.CountryDao
-import com.example.travelogue.table_folder.Folder
-import com.example.travelogue.table_folder.FolderDao
+import com.example.travelogue.folder_table.Folder
+import com.example.travelogue.folder_table.FolderDao
 import com.example.travelogue.table_journal.Journal
 import com.example.travelogue.table_journal.JournalDao
 import com.example.travelogue.doc_table.Document
