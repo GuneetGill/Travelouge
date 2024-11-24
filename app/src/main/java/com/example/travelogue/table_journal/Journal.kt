@@ -5,13 +5,14 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
 import androidx.room.ColumnInfo
+import com.example.travelogue.table_country.Country
 
 @Entity(
     tableName = "journal",
     foreignKeys = [
         ForeignKey(
             entity = Country::class, // Reference the Country table
-            parentColumns = ["countryId"], // Primary key in Country table
+            parentColumns = ["country_id"], // Primary key in Country table
             childColumns = ["countryId"], // Foreign key in Journal table
             onDelete = ForeignKey.CASCADE // Cascade delete to remove journals when a country is deleted
         )

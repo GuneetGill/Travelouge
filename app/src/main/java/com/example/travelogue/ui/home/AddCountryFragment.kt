@@ -1,5 +1,6 @@
 package com.example.travelogue.ui.home
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,10 +9,19 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.R
 import com.example.travelogue.Util
+import com.example.travelogue.db_user.UserDatabase
+import com.example.travelogue.table_country.Country
+import com.example.travelogue.table_country.CountryDao
+import com.example.travelogue.table_country.CountryRepository
+import com.example.travelogue.table_country.CountryViewModel
+import com.example.travelogue.table_country.CountryViewModelFactory
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -33,8 +43,22 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
     private lateinit var autocompleteFragment: AutocompleteSupportFragment
     private var autocompleteEditText: EditText? = null
 
+    private lateinit var database: UserDatabase
+    private lateinit var databaseDao: CountryDao
+    private lateinit var repository: CountryRepository
+    private lateinit var viewModelFactory: CountryViewModelFactory
+    private lateinit var countryViewModel: CountryViewModel
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Initialize for DB interaction
+        database = UserDatabase.getInstance(requireActivity())
+        databaseDao = database.countryDao
+        repository = CountryRepository(databaseDao)
+        viewModelFactory = CountryViewModelFactory(repository)
+        countryViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(CountryViewModel::class.java)
+
         // Initialize the Places API
         if (!Places.isInitialized()) {
             Places.initialize(requireContext(), "AIzaSyBrK3kjdBkJBiZRiQBvXVc_z_d2To3EU5w")
@@ -76,7 +100,9 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
                 // Detect if the text is cleared
                 if (s.isNullOrEmpty()) {
                     // Handle the clear button press event
-                    mMap.clear()
+                    if (::mMap.isInitialized) {
+                        mMap.clear()
+                    }
                     latlng = null
                 }
             }
@@ -95,6 +121,18 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
         view.findViewById<Button>(R.id.saveBtn).setOnClickListener {
             if (latlng != null) {
                 // SAVE LATLNG TO DATABASE
+                var country = Country()
+                country.countryName = Util.getCountryName(requireContext(), latlng!!)!!
+                country.countryLat = latlng!!.latitude
+                country.countryLng = latlng!!.longitude
+
+                // get userID
+                val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(
+                    PREF_NAME, MODE_PRIVATE
+                )
+                val userId = sharedPreferences.getLong("user_id", -1)
+                country.userOwnerId = userId
+                countryViewModel.insertCountry(country)
 
                 // Go back to countries list / home page
                 findNavController().navigate(R.id.navigation_home)
