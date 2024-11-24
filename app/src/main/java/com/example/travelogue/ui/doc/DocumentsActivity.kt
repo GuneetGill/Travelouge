@@ -3,7 +3,6 @@ package com.example.travelogue.ui.doc
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.GridView
 import android.widget.Toast
@@ -14,11 +13,11 @@ import com.example.travelogue.Dialogs
 import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.R
 import com.example.travelogue.db_user.UserDatabase
-import com.example.travelogue.table_folder.Folder
-import com.example.travelogue.table_folder.FolderDao
-import com.example.travelogue.table_folder.FolderRepository
-import com.example.travelogue.table_folder.FolderViewModel
-import com.example.travelogue.table_folder.FolderViewModelFactory
+import com.example.travelogue.folder_table.Folder
+import com.example.travelogue.folder_table.FolderDao
+import com.example.travelogue.folder_table.FolderRepository
+import com.example.travelogue.folder_table.FolderViewModel
+import com.example.travelogue.folder_table.FolderViewModelFactory
 
 
 class DocumentsActivity : AppCompatActivity() {
@@ -80,6 +79,7 @@ class DocumentsActivity : AppCompatActivity() {
             // Show a toast with the folder_id of the clicked item
             Toast.makeText(this, "Folder ID: ${clickedFolder.folder_id}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, FolderActivity::class.java)
+            intent.putExtra("folderId", clickedFolder.folder_id)
             startActivity(intent)
         }
 

@@ -1,11 +1,9 @@
-package com.example.travelogue.table_folder
+package com.example.travelogue.folder_table
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import com.example.travelogue.db_user.UserRepository
-import com.example.travelogue.db_user.UserViewModel
 import java.lang.IllegalArgumentException
 
 class FolderViewModel(private val repository: FolderRepository): ViewModel() {

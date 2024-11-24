@@ -5,15 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
 import com.example.travelogue.databinding.FragmentSettingsBinding
+import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.ui.doc.DocumentsActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.example.travelogue.Globals.PREF_NAME
 
 class SettingsFragment : Fragment() {
 
@@ -30,7 +37,11 @@ class SettingsFragment : Fragment() {
 
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+
+        // Load user details
+        loadUserDetails(sharedPreferences)
 
         // Set up Add Destination Button
         val addDestinationButton: Button = binding.buttonAddDestination
@@ -72,12 +83,37 @@ class SettingsFragment : Fragment() {
             }
         }
 
-        // In onCreateView, set up the Change button click listener
+        // Set up the Change button click listener
         binding.buttonChange.setOnClickListener {
             showChangeNameDialog()
         }
 
         return root
+    }
+
+    private fun loadUserDetails(sharedPreferences: SharedPreferences) {
+        // Get the logged-in user ID from SharedPreferences
+        val userId = sharedPreferences.getLong("user_id", -1L)
+
+        if (userId != -1L) {
+            Log.d("SettingsFragment", "Retrieved user_id: $userId")
+            // Fetch user details from the database in a coroutine
+            lifecycleScope.launch {
+                val user = withContext(Dispatchers.IO) {
+                    val database = UserDatabase.getInstance(requireContext())
+                    database.userDao.getUserById(userId)
+                }
+                user?.let {
+                    // Update the UI with user details
+                    binding.FLname.text = "${it.userFirstName} ${it.userLastName}"
+                    binding.userName.text = it.userName
+                } ?: run {
+                    Toast.makeText(context, "User details not found.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        } else {
+            Toast.makeText(context, "No logged-in user.", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showAddDestinationDialog() {
@@ -116,22 +152,17 @@ class SettingsFragment : Fragment() {
         bucketListContainer.addView(checkBox)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-
-    // Inside SettingsFragment class
-
     private fun showChangeNameDialog() {
-        // Inflate the custom layout for the dialog
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_change_settings, null)
         val editTextFirstName = dialogView.findViewById<EditText>(R.id.editText_first_name)
         val editTextLastName = dialogView.findViewById<EditText>(R.id.editText_last_name)
         val editTextUsername = dialogView.findViewById<EditText>(R.id.editText_username)
 
-        // Build and show the dialog
+        // Pre-fill current values in the dialog
+        editTextFirstName.setText(binding.FLname.text.toString().split(" ")[0])
+        editTextLastName.setText(binding.FLname.text.toString().split(" ")[1])
+        editTextUsername.setText(binding.userName.text.toString())
+
         AlertDialog.Builder(requireContext())
             .setTitle("Change Name and Username")
             .setView(dialogView)
@@ -141,9 +172,26 @@ class SettingsFragment : Fragment() {
                 val username = editTextUsername.text.toString().trim()
 
                 if (firstName.isNotEmpty() && lastName.isNotEmpty() && username.isNotEmpty()) {
-                    binding.FLname.text = "$firstName $lastName"
-                    binding.userName.text = username
-                    Toast.makeText(context, "Name and username updated!", Toast.LENGTH_SHORT).show()
+                    val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                    val userId = sharedPreferences.getLong("user_id", -1L)
+
+                    if (userId != -1L) {
+                        // Update the database
+                        lifecycleScope.launch {
+                            withContext(Dispatchers.IO) {
+                                val database = UserDatabase.getInstance(requireContext())
+                                val userDao = database.userDao
+                                userDao.updateUserDetails(userId, firstName, lastName, username)
+                            }
+
+                            // Update UI on the main thread
+                            binding.FLname.text = "$firstName $lastName"
+                            binding.userName.text = username
+                            Toast.makeText(context, "Name and username updated!", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Error: Unable to retrieve user ID.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(context, "Please fill in all fields.", Toast.LENGTH_SHORT).show()
                 }
@@ -153,5 +201,8 @@ class SettingsFragment : Fragment() {
             .show()
     }
 
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

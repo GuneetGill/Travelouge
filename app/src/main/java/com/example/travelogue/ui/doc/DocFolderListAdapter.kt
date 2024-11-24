@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 import com.example.travelogue.R
-import com.example.travelogue.table_folder.Folder
+import com.example.travelogue.folder_table.Folder
 
 class DocFolderListAdapter(private val context: Context, private var folderList: List<Folder>) : BaseAdapter(){
 
