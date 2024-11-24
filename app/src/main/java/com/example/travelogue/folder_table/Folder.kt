@@ -1,4 +1,4 @@
-package com.example.travelogue.table_folder
+package com.example.travelogue.folder_table
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

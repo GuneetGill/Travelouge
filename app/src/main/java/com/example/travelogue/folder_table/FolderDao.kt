@@ -1,6 +1,5 @@
-package com.example.travelogue.table_folder
+package com.example.travelogue.folder_table
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
