@@ -31,13 +31,15 @@ class DocumentsActivity : AppCompatActivity() {
     private lateinit var arrayList: ArrayList<Folder>
     private lateinit var arrayAdapter: DocFolderListAdapter
     private lateinit var gridView: GridView
-
+    private lateinit var returnButton: Button
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_documents)
+
+        returnButton = findViewById(R.id.return_button)
 
         //userid
         val sharedPreferences: SharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
@@ -79,6 +81,10 @@ class DocumentsActivity : AppCompatActivity() {
             Toast.makeText(this, "Folder ID: ${clickedFolder.folder_id}", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, FolderActivity::class.java)
             startActivity(intent)
+        }
+
+        returnButton.setOnClickListener {
+            finish()
         }
 
     }
