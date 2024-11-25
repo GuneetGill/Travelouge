@@ -61,7 +61,7 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
 
         // Initialize the Places API
         if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), "AIzaSyBrK3kjdBkJBiZRiQBvXVc_z_d2To3EU5w")
+            Places.initialize(requireContext(), "AIzaSyCwBNfyTAurP2MwbeBY9hRvlR8ooXLEwlU")
         }
 
         // Add the AutocompleteSupportFragment dynamically
