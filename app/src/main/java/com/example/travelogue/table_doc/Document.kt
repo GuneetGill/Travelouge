@@ -1,9 +1,8 @@
-package com.example.travelogue.doc_table
+package com.example.travelogue.table_doc
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.ForeignKey
-import com.example.travelogue.db_user.User
 import com.example.travelogue.folder_table.Folder
 
 @Entity(

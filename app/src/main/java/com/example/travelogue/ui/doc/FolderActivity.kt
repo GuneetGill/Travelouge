@@ -21,15 +21,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
 import com.example.travelogue.db_user.UserDatabase
-import com.example.travelogue.doc_table.Document
-import com.example.travelogue.doc_table.DocumentDao
-import com.example.travelogue.doc_table.DocumentRepository
-import com.example.travelogue.doc_table.DocumentViewModel
-import com.example.travelogue.doc_table.DocumentViewModelFactory
-import com.example.travelogue.folder_table.Folder
-import com.example.travelogue.folder_table.FolderRepository
-import com.example.travelogue.folder_table.FolderViewModel
-import com.example.travelogue.folder_table.FolderViewModelFactory
+import com.example.travelogue.table_doc.Document
+import com.example.travelogue.table_doc.DocumentDao
+import com.example.travelogue.table_doc.DocumentRepository
+import com.example.travelogue.table_doc.DocumentViewModel
+import com.example.travelogue.table_doc.DocumentViewModelFactory
 import java.io.File
 
 class FolderActivity : AppCompatActivity() {

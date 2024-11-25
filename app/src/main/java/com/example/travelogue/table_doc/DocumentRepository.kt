@@ -1,4 +1,4 @@
-package com.example.travelogue.doc_table
+package com.example.travelogue.table_doc
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.Flow

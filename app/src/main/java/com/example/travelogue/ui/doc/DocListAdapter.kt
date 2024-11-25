@@ -6,10 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
-import android.widget.TextView
 import com.example.travelogue.R
-import com.example.travelogue.doc_table.Document
-import com.example.travelogue.folder_table.Folder
+import com.example.travelogue.table_doc.Document
 
 class DocListAdapter(private val context: Context, private var docList: List<Document>) : BaseAdapter(){
 

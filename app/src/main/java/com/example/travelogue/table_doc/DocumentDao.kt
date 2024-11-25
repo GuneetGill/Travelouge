@@ -1,4 +1,4 @@
-package com.example.travelogue.doc_table
+package com.example.travelogue.table_doc
 
 
 import androidx.room.*
