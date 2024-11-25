@@ -20,6 +20,7 @@ import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.db_user.UserRepository
 import com.example.travelogue.db_user.UserViewModel
 import com.example.travelogue.db_user.UserViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,11 +35,15 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var viewModelFactory: UserViewModelFactory
     private lateinit var userViewModel: UserViewModel
 
+    private lateinit var mAuth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
+        //initialize firebase authentication
+        mAuth = FirebaseAuth.getInstance()
 
         usernameEmail = findViewById(R.id.user_name_email)
         password = findViewById(R.id.user_pw)
@@ -64,37 +69,55 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-
         loginButton.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            val usernameOrEmail = usernameEmail.text.toString()
-            val userPassword = password.text.toString()
-            var isUserFound = false
-            var userId = -1L
-            userViewModel.allUsersLiveData.observe(this) { users ->
-                if (users.isNotEmpty()) {
-                    users.forEach { user ->
-                        if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail) && user.userPassword == userPassword) {
-                            isUserFound = true
-                            userId = user.userId
+            val emailAUTH = usernameEmail.text.toString().trim()
+            val userPasswordAUTH = password.text.toString().trim()
+
+            if (emailAUTH.isEmpty() || userPasswordAUTH.isEmpty()) {
+                Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            mAuth.signInWithEmailAndPassword(emailAUTH, userPasswordAUTH)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+
+                        //db stuff
+                        val intent = Intent(this, MainActivity::class.java)
+                        val usernameOrEmail = usernameEmail.text.toString()
+                        val userPassword = password.text.toString()
+                        var isUserFound = false
+                        var userId = -1L
+                        userViewModel.allUsersLiveData.observe(this) { users ->
+                            if (users.isNotEmpty()) {
+                                users.forEach { user ->
+                                    if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail) && user.userPassword == userPassword) {
+                                        isUserFound = true
+                                        userId = user.userId
+                                    }
+                                }
+                            }
                         }
+                        if(isUserFound) {
+                            //share user id across the app
+                            val sharedPreferences: SharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                            val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                            editor.clear()
+                            editor.putLong("user_id", userId)
+                            Log.d("myuserid", "User : $userId")
+                            editor.commit()
+                            startActivity(intent)
+                            finish()
+                        }
+
+                    }
+                    else
+                    {
+                        // Login failed
+                        Log.e("LoginActivity", "Login failed: ${task.exception?.message}")
+                        Toast.makeText(this, "Login failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-            }
-
-            if(isUserFound) {
-                //share user id across the app
-                val sharedPreferences: SharedPreferences = getSharedPreferences(PREF_NAME, MODE_PRIVATE)
-                val editor: SharedPreferences.Editor = sharedPreferences.edit()
-                editor.clear()
-                editor.putLong("user_id", userId)
-                Log.d("myuserid", "User : $userId")
-                editor.commit()
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "Wrong", Toast.LENGTH_SHORT).show()
-            }
-
         }
 
         regButton.setOnClickListener {

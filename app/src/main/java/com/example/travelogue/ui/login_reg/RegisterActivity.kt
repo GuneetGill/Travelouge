@@ -5,6 +5,8 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import android.util.Patterns
+import android.widget.Toast
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
@@ -15,6 +17,8 @@ import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.db_user.UserRepository
 import com.example.travelogue.db_user.UserViewModel
 import com.example.travelogue.db_user.UserViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
+
 
 class RegisterActivity : AppCompatActivity() {
 
@@ -32,12 +36,16 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var viewModelFactory: UserViewModelFactory
     private lateinit var userViewModel: UserViewModel
 
+    private lateinit var mAuth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
+
+        // Initialize Firebase Authentication
+        mAuth = FirebaseAuth.getInstance()
 
         regFirstName = findViewById(R.id.reg_first_name)
         regLastName = findViewById(R.id.reg_last_name)
@@ -59,13 +67,52 @@ class RegisterActivity : AppCompatActivity() {
         val user = User()
 
         regButton.setOnClickListener {
-            user.userFirstName = regFirstName.text.toString()
-            user.userLastName = regLastName.text.toString()
-            user.userName = regUserName.text.toString()
-            user.userEmail = regEmail.text.toString()
-            user.userPassword = regPassword.text.toString()
-            userViewModel.insertUser(user)
-            finish()
+            val email = regEmail.text.toString().trim()
+            val password = regPassword.text.toString().trim()
+
+            // Input validation
+            if (email.isEmpty()) {
+                regEmail.error = "Email is required"
+                regEmail.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                regEmail.error = "Please enter a valid email"
+                regEmail.requestFocus()
+                return@setOnClickListener
+            }
+
+            if (password.isEmpty() || password.length < 6) {
+                regPassword.error = "Password must be at least 6 characters"
+                regPassword.requestFocus()
+                return@setOnClickListener
+            }
+
+            // Register user with Firebase Authentication
+            mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        //add in db
+                        user.userFirstName = regFirstName.text.toString()
+                        user.userLastName = regLastName.text.toString()
+                        user.userName = regUserName.text.toString()
+                        user.userEmail = regEmail.text.toString()
+                        user.userPassword = regPassword.text.toString()
+                        userViewModel.insertUser(user)
+
+                        // User successfully registered
+                        Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                        finish() // Close the registration screen
+                    } else {
+                        // Registration failed
+                        Toast.makeText(
+                            this,
+                            "Registration failed: ${task.exception?.message}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
         }
 
         regBackButton.setOnClickListener{
