@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.google.android.libraries.mapsplatform.secrets.gradle.plugin)
+    alias(libs.plugins.google.gms.google.services)
     id("kotlin-kapt") //XD added
 }
 
@@ -72,4 +73,7 @@ dependencies {
     implementation("androidx.room:room-ktx:$room_version")
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx: $lifecycle_version")
+
+    implementation(libs.firebase.auth)
+    implementation ("com.google.android.gms:play-services-auth:21.2.0")
 }
