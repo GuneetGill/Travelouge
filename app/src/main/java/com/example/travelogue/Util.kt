@@ -65,8 +65,7 @@ object Util {
     }
 
     // Function to show the dialog
-    fun showEnableFingerprintDialog(context: Context, userID: Long) {
-        val intent = Intent(context, MainActivity::class.java)
+    fun showEnableFingerprintDialog(context: Context, userID: Long, returnIntent: Intent) {
         val dialog = AlertDialog.Builder(context)
             .setTitle("Enable Fingerprint Login")
             .setMessage("Do you want to use fingerprint authentication for future logins?")
@@ -74,12 +73,12 @@ object Util {
                 // User agrees to enable fingerprint login
                 saveToken(context, userID)
                 Toast.makeText(context, "Fingerprint Authentication Enabled", Toast.LENGTH_SHORT).show()
-                context.startActivity(intent)
+                context.startActivity(returnIntent)
             }
             .setNegativeButton("No") { _, _ ->
                 // User declines
                 //saveFingerprintPreference(userID)
-                context.startActivity(intent)
+                context.startActivity(returnIntent)
             }
             .create()
 

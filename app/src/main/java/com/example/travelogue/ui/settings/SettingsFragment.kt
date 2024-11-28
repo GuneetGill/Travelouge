@@ -21,6 +21,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.example.travelogue.Globals.PREF_NAME
+import com.example.travelogue.MainActivity
+import com.example.travelogue.Util
 
 class SettingsFragment : Fragment() {
 
@@ -86,6 +88,12 @@ class SettingsFragment : Fragment() {
         // Set up the Change button click listener
         binding.buttonChange.setOnClickListener {
             showChangeNameDialog()
+        }
+
+        // on click for enable fingerprint login
+        binding.enableFingerPrintLogin.setOnClickListener {
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            Util.showEnableFingerprintDialog(requireContext(), sharedPreferences.getLong("user_id", -1L), intent)
         }
 
         return root

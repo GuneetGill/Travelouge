@@ -5,6 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.provider.Settings
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -110,7 +112,8 @@ class LoginActivity : AppCompatActivity() {
                 editor.commit()
                 // ask if user wants to enable fingerprint auth
                 if (Util.isFingerprintEnabled(this) == null && Util.getToken(this) != userId) {
-                    Util.showEnableFingerprintDialog(this, userId)
+                    val intent = Intent(this, MainActivity::class.java)
+                    Util.showEnableFingerprintDialog(this, userId, intent)
                 }
                 else {
                     startActivity(intent)
@@ -177,44 +180,50 @@ class LoginActivity : AppCompatActivity() {
             biometricLogin.alpha = 0.5f
         }
 
+        usernameEmail?.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                // grey out login with finger print button if no username or email entered
+                if (s.isNullOrEmpty()) {
+                    biometricLogin.isEnabled = false
+                    biometricLogin.alpha = 0.5f
+                }
+                else {
+                    biometricLogin.isEnabled = true
+                    biometricLogin.alpha = 1f
+                }
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         biometricLogin.setOnClickListener {
             // check that username/email field is filled out
             val usernameOrEmail = usernameEmail.text.toString()
-            if (usernameOrEmail.isEmpty()) {
-                usernameEmail.performClick()
-                Toast.makeText(applicationContext, "Enter your username or email",
-                    Toast.LENGTH_SHORT)
-                    .show()
-            }
-            else {
-                var userId = -1L
-                userViewModel.allUsersLiveData.observe(this) { users ->
-                    if (users.isNotEmpty()) {
-                        users.forEach { user ->
-                            if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail)) {
-                                userId = user.userId
-                            }
+            var userId = -1L
+            userViewModel.allUsersLiveData.observe(this) { users ->
+                if (users.isNotEmpty()) {
+                    users.forEach { user ->
+                        if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail)) {
+                            userId = user.userId
                         }
                     }
                 }
-                if (userId == -1L) {
-                    Toast.makeText(applicationContext, "Invalid Username or Email.",
-                        Toast.LENGTH_SHORT)
-                        .show()
-                }
-                // check that correct user is entered and has fingerprint enabled
-                if (Util.getToken(this) == userId) {
-                    biometricPrompt.authenticate(promptInfo)
-                }
-                else {
-                    Toast.makeText(applicationContext, "This user does not have fingerprint enabled. Please login with password.",
-                        Toast.LENGTH_SHORT)
-                        .show()
-                }
             }
-
+            if (userId == -1L) {
+                Toast.makeText(applicationContext, "Invalid Username or Email.",
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
+            // check that correct user is entered and has fingerprint enabled
+            if (Util.getToken(this) == userId) {
+                biometricPrompt.authenticate(promptInfo)
+            }
+            else {
+                Toast.makeText(applicationContext, "This user does not have fingerprint enabled. Please login with password.",
+                    Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-
     }
-
 }
