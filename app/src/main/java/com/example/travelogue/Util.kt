@@ -47,23 +47,17 @@ object Util {
     }
 
     // for biometric login
-    fun saveToken(context: Context, userID: Long) {
+    fun saveToken(context: Context, userID: Long, isEnabled: Boolean) {
         val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        sharedPreferences.edit().putString("user_token", userID.toString()).apply()
-        sharedPreferences.edit().putBoolean("fingerprint", true).apply()
+        sharedPreferences.edit().putBoolean(userID.toString(), isEnabled).apply()
     }
 
-    fun isFingerprintEnabled(context: Context): Boolean? {
+    fun isFingerprintEnabled(context: Context, userID: Long): Boolean? {
         val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        if (sharedPreferences.contains("fingerprint")) {
-            return sharedPreferences.getBoolean("fingerprint", false)
+        if (sharedPreferences.contains(userID.toString())) {
+            return sharedPreferences.getBoolean(userID.toString(), false)
         }
         return null
-    }
-
-    fun getToken(context: Context): Long? {
-        val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("user_token", null)?.toLong()
     }
 
     // Function to show the dialog
@@ -73,13 +67,13 @@ object Util {
             .setMessage("Do you want to use fingerprint authentication for future logins?")
             .setPositiveButton("Yes") { _, _ ->
                 // User agrees to enable fingerprint login
-                saveToken(context, userID)
+                saveToken(context, userID, true)
                 Toast.makeText(context, "Fingerprint Authentication Enabled", Toast.LENGTH_SHORT).show()
                 context.startActivity(returnIntent)
             }
             .setNegativeButton("No") { _, _ ->
                 // User declines
-                //saveFingerprintPreference(userID)
+                saveToken(context, userID, false)
                 context.startActivity(returnIntent)
             }
             .create()

@@ -111,7 +111,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d("myuserid", "User : $userId")
                 editor.commit()
                 // ask if user wants to enable fingerprint auth
-                if (Util.isFingerprintEnabled(this) == null && Util.getToken(this) != userId) {
+                if (Util.isFingerprintEnabled(this, userId) == null) {
                     val intent = Intent(this, MainActivity::class.java)
                     Util.showEnableFingerprintDialog(this, userId, intent)
                 }
@@ -174,12 +174,6 @@ class LoginActivity : AppCompatActivity() {
             .setNegativeButtonText("Use account password")
             .build()
 
-        // disable and grey out biometric auth button if not enabled
-        if (Util.isFingerprintEnabled(this) == null) {
-            biometricLogin.isEnabled = false
-            biometricLogin.alpha = 0.5f
-        }
-
         usernameEmail?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 // grey out login with finger print button if no username or email entered
@@ -216,7 +210,7 @@ class LoginActivity : AppCompatActivity() {
                     .show()
             }
             // check that correct user is entered and has fingerprint enabled
-            if (Util.getToken(this) == userId) {
+            else if (Util.isFingerprintEnabled(this, userId) == true) {
                 biometricPrompt.authenticate(promptInfo)
             }
             else {
