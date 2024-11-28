@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.travelogue.R
+import com.example.travelogue.Util
 import com.example.travelogue.databinding.FragmentHomeBinding
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.table_country.CountryDao
@@ -61,7 +62,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mMap.setMapStyle(style)
 
         // Observe the LiveData from the ViewModel
-        countryViewModel.allCountriesLiveData.observe(viewLifecycleOwner) { countries ->
+        countryViewModel.getCountriesByUserId(Util.getUserId(requireContext())).observe(viewLifecycleOwner) { countries ->
            countries.forEach { country ->
                googleMap.addMarker(
                    MarkerOptions()

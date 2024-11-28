@@ -2,6 +2,7 @@ package com.example.travelogue
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Build
@@ -9,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.travelogue.Globals.PREF_NAME
 import com.google.android.gms.maps.model.LatLng
 import java.util.Locale
 
@@ -83,5 +85,11 @@ object Util {
             .create()
 
         dialog.show()
+    }
+
+    // get userId
+    fun getUserId(context: Context): Long {
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        return sharedPreferences.getLong("user_id", -1L)
     }
 }
