@@ -55,6 +55,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         countryViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(CountryViewModel::class.java)
     }
 
+    data class MarkerInfo(val countryId: Long, val countryName: String)
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
@@ -64,14 +66,26 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         // Observe the LiveData from the ViewModel
         countryViewModel.getCountriesByUserId(Util.getUserId(requireContext())).observe(viewLifecycleOwner) { countries ->
            countries.forEach { country ->
-               googleMap.addMarker(
+               val marker = googleMap.addMarker(
                    MarkerOptions()
                        .position(LatLng(country.countryLat, country.countryLng))
                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
                )
+               marker?.tag = MarkerInfo(countryId = country.country_id, countryName = country.countryName)
            }
             //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locations[1], 2f))
         }
-    }
 
+        // on click for pin
+        mMap.setOnMarkerClickListener { clickedMarker ->
+            val markerInfo = clickedMarker.tag as MarkerInfo
+            // Define the navigation action and navigate to CountryFragment
+            val bundle = Bundle().apply {
+                putString("countryName", markerInfo.countryName)
+                putLong("countryID", markerInfo.countryId)
+            }
+            findNavController().navigate(R.id.countryFragment, bundle)
+            false
+        }
+    }
 }
