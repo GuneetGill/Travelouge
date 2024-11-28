@@ -54,4 +54,10 @@
         android:layout_height="wrap_content"
         android:text="Register" />
 
+    <Button
+        android:id="@+id/biometricLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login with finger print" />
+
 </LinearLayout>
