@@ -10,9 +10,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
-import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.travelogue.BuildConfig
 import com.example.travelogue.Globals.PREF_NAME
 import com.example.travelogue.R
 import com.example.travelogue.Util
@@ -61,7 +61,7 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
 
         // Initialize the Places API
         if (!Places.isInitialized()) {
-            Places.initialize(requireContext(), "AIzaSyBrK3kjdBkJBiZRiQBvXVc_z_d2To3EU5w")
+            Places.initialize(requireContext(), BuildConfig.MAPS_API_KEY)
         }
 
         // Add the AutocompleteSupportFragment dynamically
@@ -179,7 +179,7 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
         mMap.addMarker(
             MarkerOptions()
                 .position(coords)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .icon(Util.bitmapDescriptorFromVector(resources, R.drawable.baseline_location_pin_24))
         )
         val currentZoom = mMap.cameraPosition.zoom
         if (currentZoom <= 4f) {

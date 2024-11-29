@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.travelogue"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.travelogue"
@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -65,6 +66,7 @@ dependencies {
     implementation ("com.github.AnyChart:AnyChart-Android:1.1.5")
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("ir.mahozad.android:pie-chart:0.7.0")
+    implementation("androidx.biometric:biometric-ktx:1.4.0-alpha02")
 
 
     val room_version = "2.6.0"

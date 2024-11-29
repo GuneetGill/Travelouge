@@ -17,7 +17,6 @@ class JournalRepository(private val journalDao: JournalDao) {
     suspend fun getJournalsByCountry(countryId: Long): List<Journal> {
         return withContext(Dispatchers.IO) {
             val journals = journalDao.getJournalsByCountry(countryId)
-            println("debug: Inside repo - journals.size = ${journals.size}")
             journals
         }
     }

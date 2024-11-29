@@ -11,6 +11,6 @@ interface CountryDao {
     @Delete
     suspend fun deleteCountry(country: Country)
 
-    @Query("SELECT * FROM country_table")
-    fun getAllCountries(): Flow<List<Country>>
+    @Query("SELECT * FROM country_table WHERE user_owner_id_col=:userId")
+    fun getAllCountries(userId: Long): List<Country>
 }
