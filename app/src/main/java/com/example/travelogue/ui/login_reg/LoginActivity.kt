@@ -89,6 +89,7 @@ class LoginActivity : AppCompatActivity() {
                 editor.clear()
                 editor.putLong("user_id", userId)
                 Log.d("myuserid", "User : $userId")
+                editor.putString("user_password", userPassword)
                 editor.commit()
                 startActivity(intent)
             } else {
