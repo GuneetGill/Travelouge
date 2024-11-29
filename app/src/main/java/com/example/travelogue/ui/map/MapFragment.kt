@@ -1,20 +1,15 @@
 package com.example.travelogue.ui.map
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.travelogue.R
 import com.example.travelogue.Util
-import com.example.travelogue.databinding.FragmentHomeBinding
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.table_country.CountryDao
 import com.example.travelogue.table_country.CountryRepository
@@ -24,8 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -99,6 +92,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             }
             findNavController().navigate(R.id.countryFragment, bundle)
             false
+        }
+
+        // disable goToCountryBtn if no countries
+        if (pinLocations.size == 0) {
+            goToCountryBtn.isEnabled = false
+            goToCountryBtn.alpha = 0.5f
         }
 
         // on click for find country button
