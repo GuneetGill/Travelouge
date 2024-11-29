@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.travelogue.R
-import com.example.travelogue.databinding.FragmentHomeBinding
+import com.example.travelogue.Util
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.table_country.CountryDao
 import com.example.travelogue.table_country.CountryRepository
@@ -21,7 +19,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -35,6 +32,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var repository: CountryRepository
     private lateinit var viewModelFactory: CountryViewModelFactory
     private lateinit var countryViewModel: CountryViewModel
+    private var pinLocations: MutableList<LatLng> = mutableListOf()
+    private var currentZoomedCountry: Int = 0
+
+    private lateinit var goToCountryBtn: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_map, container, false)
@@ -52,7 +53,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         repository = CountryRepository(databaseDao)
         viewModelFactory = CountryViewModelFactory(repository)
         countryViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(CountryViewModel::class.java)
+
+        // UI elements
+        goToCountryBtn = view.findViewById(R.id.goToCountry)
     }
+
+    data class MarkerInfo(val countryId: Long, val countryName: String)
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -61,16 +67,50 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         mMap.setMapStyle(style)
 
         // Observe the LiveData from the ViewModel
-        countryViewModel.allCountriesLiveData.observe(viewLifecycleOwner) { countries ->
+        countryViewModel.getCountriesByUserId(Util.getUserId(requireContext())).observe(viewLifecycleOwner) { countries ->
+            pinLocations.clear()
            countries.forEach { country ->
-               googleMap.addMarker(
+               val countryLocation = LatLng(country.countryLat, country.countryLng)
+               val marker = googleMap.addMarker(
                    MarkerOptions()
-                       .position(LatLng(country.countryLat, country.countryLng))
-                       .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                       .position(countryLocation)
+                       .icon(Util.bitmapDescriptorFromVector(resources, R.drawable.baseline_location_pin_24))
                )
+               pinLocations.add(countryLocation)
+               marker?.tag = MarkerInfo(countryId = country.country_id, countryName = country.countryName)
            }
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locations[1], 2f))
+            currentZoomedCountry = pinLocations.lastIndex
         }
+
+        // on click for pin
+        mMap.setOnMarkerClickListener { clickedMarker ->
+            val markerInfo = clickedMarker.tag as MarkerInfo
+            // Define the navigation action and navigate to CountryFragment
+            val bundle = Bundle().apply {
+                putString("countryName", markerInfo.countryName)
+                putLong("countryID", markerInfo.countryId)
+            }
+            findNavController().navigate(R.id.countryFragment, bundle)
+            false
+        }
+
+        // disable goToCountryBtn if no countries
+        if (pinLocations.size == 0) {
+            goToCountryBtn.isEnabled = false
+            goToCountryBtn.alpha = 0.5f
+        }
+
+        // on click for find country button
+        goToCountryBtn.setOnClickListener {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinLocations[currentZoomedCountry], 5f))
+            iterateCurrentZoomedCountry()
+        }
+
+    }
+
+    // iterate current zoomed country
+    private fun iterateCurrentZoomedCountry() {
+        currentZoomedCountry = (currentZoomedCountry + 1) % pinLocations.size
     }
 
 }
