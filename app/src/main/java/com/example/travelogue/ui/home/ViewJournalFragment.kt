@@ -1,5 +1,6 @@
 package com.example.travelogue.ui.home
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -15,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.example.travelogue.R
 import androidx.navigation.fragment.findNavController
-
+import com.example.travelogue.Util
 
 
 class ViewJournalFragment : Fragment() {
@@ -43,8 +44,19 @@ class ViewJournalFragment : Fragment() {
 
         // set img
         val imageView = view.findViewById<ImageView>(R.id.journalImg)
-//        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
-        imageView.setImageURI(journalPhotoUri!!.toUri())
+
+        // if image was added set it, otherwise just use the default image
+        if (!journalPhotoUri.isNullOrEmpty()) {
+            Util.checkPermissions(requireActivity(), arrayOf(
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ))
+            println("debug: journal image detected, setting image")
+            imageView.setImageURI(journalPhotoUri!!.toUri())
+        }
+        else {
+            imageView.setImageResource(R.drawable.default_journal_image)
+        }
 
         // set star rating
         val rating = view.findViewById<RatingBar>(R.id.JournalRating)
@@ -64,6 +76,5 @@ class ViewJournalFragment : Fragment() {
         expensesButton.setOnClickListener {
             findNavController().navigate(R.id.ExpenseFragment)
         }
-
     }
 }
