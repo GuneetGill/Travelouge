@@ -179,7 +179,7 @@ class AddCountryFragment : Fragment(R.layout.fragment_add_country), OnMapReadyCa
         mMap.addMarker(
             MarkerOptions()
                 .position(coords)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                .icon(Util.bitmapDescriptorFromVector(resources, R.drawable.baseline_location_pin_24))
         )
         val currentZoom = mMap.cameraPosition.zoom
         if (currentZoom <= 4f) {

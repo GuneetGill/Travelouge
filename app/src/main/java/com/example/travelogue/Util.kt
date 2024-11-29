@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Bitmap
 import android.location.Geocoder
 import android.os.Build
 import android.widget.Toast
@@ -11,6 +13,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.travelogue.Globals.PREF_NAME
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import java.util.Locale
 
@@ -85,5 +89,20 @@ object Util {
     fun getUserId(context: Context): Long {
         val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         return sharedPreferences.getLong("user_id", -1L)
+    }
+
+    // get bitmap from vector drawable
+    // Function to create a BitmapDescriptor from a resource
+    fun bitmapDescriptorFromVector(resources: Resources, resourceId: Int): BitmapDescriptor {
+        val vectorDrawable = resources.getDrawable(resourceId, null)
+        val bitmap = Bitmap.createBitmap(
+            vectorDrawable.intrinsicWidth,
+            vectorDrawable.intrinsicHeight,
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = android.graphics.Canvas(bitmap)
+        vectorDrawable.setBounds(0, 0, canvas.width, canvas.height)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 }

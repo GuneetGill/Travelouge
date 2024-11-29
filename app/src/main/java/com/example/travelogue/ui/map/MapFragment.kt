@@ -1,10 +1,12 @@
 package com.example.travelogue.ui.map
 
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -36,6 +39,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var repository: CountryRepository
     private lateinit var viewModelFactory: CountryViewModelFactory
     private lateinit var countryViewModel: CountryViewModel
+    private var pinLocations: MutableList<LatLng> = mutableListOf()
+    private var currentZoomedCountry: Int = 0
+
+    private lateinit var goToCountryBtn: Button
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.fragment_map, container, false)
@@ -53,6 +60,9 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         repository = CountryRepository(databaseDao)
         viewModelFactory = CountryViewModelFactory(repository)
         countryViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(CountryViewModel::class.java)
+
+        // UI elements
+        goToCountryBtn = view.findViewById(R.id.goToCountry)
     }
 
     data class MarkerInfo(val countryId: Long, val countryName: String)
@@ -65,15 +75,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
         // Observe the LiveData from the ViewModel
         countryViewModel.getCountriesByUserId(Util.getUserId(requireContext())).observe(viewLifecycleOwner) { countries ->
+            pinLocations.clear()
            countries.forEach { country ->
+               val countryLocation = LatLng(country.countryLat, country.countryLng)
                val marker = googleMap.addMarker(
                    MarkerOptions()
-                       .position(LatLng(country.countryLat, country.countryLng))
-                       .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE))
+                       .position(countryLocation)
+                       .icon(Util.bitmapDescriptorFromVector(resources, R.drawable.baseline_location_pin_24))
                )
+               pinLocations.add(countryLocation)
                marker?.tag = MarkerInfo(countryId = country.country_id, countryName = country.countryName)
            }
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(locations[1], 2f))
+            currentZoomedCountry = pinLocations.lastIndex
         }
 
         // on click for pin
@@ -87,5 +100,18 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             findNavController().navigate(R.id.countryFragment, bundle)
             false
         }
+
+        // on click for find country button
+        goToCountryBtn.setOnClickListener {
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pinLocations[currentZoomedCountry], 5f))
+            iterateCurrentZoomedCountry()
+        }
+
     }
+
+    // iterate current zoomed country
+    private fun iterateCurrentZoomedCountry() {
+        currentZoomedCountry = (currentZoomedCountry + 1) % pinLocations.size
+    }
+
 }
