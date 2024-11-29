@@ -109,6 +109,7 @@ class LoginActivity : AppCompatActivity() {
                 editor.clear()
                 editor.putLong("user_id", userId)
                 Log.d("myuserid", "User : $userId")
+                editor.putString("user_password", userPassword)
                 editor.commit()
                 // ask if user wants to enable fingerprint auth
                 if (Util.isFingerprintEnabled(this, userId) == null) {
