@@ -34,7 +34,8 @@ abstract class UserDatabase :
                     instance = Room.databaseBuilder(
                         context.applicationContext,
                         UserDatabase::class.java, "user_table"
-                    ).build()
+                    ).fallbackToDestructiveMigration()
+                        .build()
                     INSTANCE = instance
                 }
                 return instance
