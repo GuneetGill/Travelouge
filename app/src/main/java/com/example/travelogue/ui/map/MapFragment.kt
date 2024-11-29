@@ -80,6 +80,12 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                marker?.tag = MarkerInfo(countryId = country.country_id, countryName = country.countryName)
            }
             currentZoomedCountry = pinLocations.lastIndex
+
+            // enable goToCountryBtn if countries exist
+            if (pinLocations.size != 0) {
+                goToCountryBtn.isEnabled = true
+                goToCountryBtn.alpha = 1f
+            }
         }
 
         // on click for pin
@@ -94,10 +100,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             false
         }
 
-        // disable goToCountryBtn if no countries
-        if (pinLocations.size == 0) {
-            goToCountryBtn.isEnabled = false
-            goToCountryBtn.alpha = 0.5f
+        // enable goToCountryBtn if countries exist
+        if (pinLocations.size != 0) {
+            goToCountryBtn.isEnabled = true
+            goToCountryBtn.alpha = 1f
         }
 
         // on click for find country button
