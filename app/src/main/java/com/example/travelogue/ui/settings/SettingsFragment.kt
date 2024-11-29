@@ -51,10 +51,15 @@ class SettingsFragment : Fragment() {
 
         // Set up Documents Button
         val documentsButton: Button = binding.buttonDocuments
+//        documentsButton.setOnClickListener {
+//            val intent = Intent(requireContext(), DocumentsActivity::class.java)
+//            startActivity(intent)
+//        }
+
         documentsButton.setOnClickListener {
-            val intent = Intent(requireContext(), DocumentsActivity::class.java)
-            startActivity(intent)
+            showPasswordDialog()
         }
+
 
         // Load currency list from strings.xml and set up Spinner
         val currencyList = resources.getStringArray(R.array.currency_list).toList()
@@ -200,6 +205,39 @@ class SettingsFragment : Fragment() {
             .create()
             .show()
     }
+
+    private fun showPasswordDialog() {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_password, null)
+        val passwordEditText = dialogView.findViewById<EditText>(R.id.password_edit_text)
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Enter Password")
+            .setView(dialogView)
+            .setPositiveButton("Submit") { _, _ ->
+                val enteredPassword = passwordEditText.text.toString()
+                validatePassword(enteredPassword)
+            }
+            .setNegativeButton("Cancel", null)
+            .create()
+            .show()
+    }
+
+    private fun validatePassword(password: String) {
+        // Retrieve the stored password (or set a predefined password for simplicity)
+        val sharedPreferences = requireContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val storedPassword = sharedPreferences.getString("user_password", null)
+
+        if (password == storedPassword) {
+            // Password is correct, grant access
+            val intent = Intent(requireContext(), DocumentsActivity::class.java)
+            startActivity(intent)
+        } else {
+            // Password is incorrect, show error message
+            Toast.makeText(context, "Wrong password. Access denied!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.settings.SettingsFragment">
 
-
     <!-- Profile Picture -->
 
     <ImageView
@@ -21,18 +20,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <!-- Email -->
-
-
     <!-- Change Button -->
     <TextView
         android:id="@+id/FLname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="40dp"
         android:hint="FirstName LastName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -45,7 +39,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:hint="UserName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,15 +55,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <Button
-        android:id="@+id/resetP_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="52dp"
-        android:text="Reset Password"
-        app:layout_constraintTop_toBottomOf="@id/image_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <!-- Documents Button -->
@@ -78,7 +62,7 @@
         android:id="@+id/button_documents"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="112dp"
+        android:layout_margin="60dp"
         android:text="        Documents        "
         app:layout_constraintTop_toBottomOf="@id/image_profile"
         app:layout_constraintStart_toStartOf="parent"
@@ -146,7 +130,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
-
 
             <TextView
                 android:id="@+id/text_bucket_list_header"
