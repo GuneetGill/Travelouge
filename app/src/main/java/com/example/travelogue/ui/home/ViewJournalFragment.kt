@@ -33,6 +33,7 @@ class ViewJournalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // get all the journal data
+        val journalID = arguments?.getLong("journalID")
         val journalTitle = arguments?.getString("title")
         val journalRating = arguments?.getFloat("rating")
         val journalContent = arguments?.getString("content")
