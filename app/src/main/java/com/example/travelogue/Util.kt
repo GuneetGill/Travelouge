@@ -9,8 +9,10 @@ import android.graphics.Bitmap
 import android.location.Geocoder
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
@@ -92,7 +94,7 @@ object Util {
         dialog.show()
     }
 
-    fun getBiometricPrompt(context: Context, activity: FragmentActivity, successIntent: Intent): BiometricPrompt {
+    fun getBiometricPrompt(context: Context, activity: FragmentActivity, successIntent: Intent, userId: Long?, userPwd: String?): BiometricPrompt {
 
         lateinit var executor: Executor
         lateinit var biometricPrompt: BiometricPrompt
@@ -125,8 +127,17 @@ object Util {
                     Toast.makeText(context,
                         "Authentication succeeded!", Toast.LENGTH_SHORT)
                         .show()
-                    // go to home
-                    val intent = Intent(context, DocumentsActivity::class.java)
+                    // save userId in sharedPrefs
+                    //share user id across the app if needed
+                    if (userId != null) {
+                        val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE)
+                        val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                        editor.clear()
+                        editor.putLong("user_id", userId)
+                        editor.putString("user_password", userPwd)
+                        editor.commit()
+                    }
+                    // go to success activity
                     context.startActivity(successIntent)
                 }
 

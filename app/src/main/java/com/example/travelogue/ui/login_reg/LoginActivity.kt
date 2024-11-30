@@ -118,9 +118,6 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Biometric login
-        val successIntent = Intent(this, MainActivity::class.java)
-        biometricPrompt = Util.getBiometricPrompt(this, this, successIntent)
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric login")
@@ -149,11 +146,13 @@ class LoginActivity : AppCompatActivity() {
             // check that username/email field is filled out
             val usernameOrEmail = usernameEmail.text.toString()
             var userId = -1L
+            var userPwd = ""
             userViewModel.allUsersLiveData.observe(this) { users ->
                 if (users.isNotEmpty()) {
                     users.forEach { user ->
                         if ((user.userEmail == usernameOrEmail || user.userName == usernameOrEmail)) {
                             userId = user.userId
+                            userPwd = user.userPassword
                         }
                     }
                 }
@@ -165,6 +164,9 @@ class LoginActivity : AppCompatActivity() {
             }
             // check that correct user is entered and has fingerprint enabled
             else if (Util.isFingerprintEnabled(this, userId) == true) {
+                // Biometric login
+                val successIntent = Intent(this, MainActivity::class.java)
+                biometricPrompt = Util.getBiometricPrompt(this, this, successIntent, userId, userPwd)
                 biometricPrompt.authenticate(promptInfo)
             }
             else {

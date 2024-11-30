@@ -58,7 +58,7 @@ class SettingsFragment : Fragment() {
 
         // biometric prompt
         val successIntent = Intent(requireContext(), DocumentsActivity::class.java)
-        biometricPrompt = Util.getBiometricPrompt(requireContext(), requireActivity(), successIntent)
+        biometricPrompt = Util.getBiometricPrompt(requireContext(), requireActivity(), successIntent, null, null)
 
         promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle("Biometric Authentication")
