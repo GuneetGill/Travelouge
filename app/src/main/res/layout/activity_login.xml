@@ -60,6 +60,6 @@
         android:layout_height="wrap_content"
         android:alpha="0.5"
         android:enabled="false"
-        android:text="Login with finger print" />
+        android:text="Login with biometrics" />
 
 </LinearLayout>
