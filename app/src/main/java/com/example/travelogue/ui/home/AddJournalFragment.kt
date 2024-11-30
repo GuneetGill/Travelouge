@@ -46,6 +46,7 @@ import android.widget.ImageButton
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+
 class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
 
     private var photoUri: Uri? = null
@@ -92,10 +93,14 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
         val countryName = arguments?.getString("countryName")
         val countryID = arguments?.getLong("countryID")
 
+        Log.d("testing", "country name and id in addjournalfragment is  $countryID $countryName")
+
         // Initialize activity result handlers
         initActivityResultHandlers()
 
         requestMicrophonePermission()
+
+
 
         btnAddPhotos.setOnClickListener {
             showImagePickerDialog()
@@ -124,6 +129,8 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
 
                 // Insert into database using a coroutine
                 journalViewModel.addJournal(journal)
+                // Insert into database and retrieve the generated journalId
+
                 Toast.makeText(requireContext(), "Journal Added", Toast.LENGTH_SHORT).show()
                 // Go back to country fragment
                 val bundle = Bundle().apply {

@@ -2,6 +2,7 @@
 package com.example.travelogue.ui.home
 import com.example.travelogue.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,6 +79,7 @@ class CountryFragment : Fragment() {
 
         // On click for add journal
         binding.addJournalButton.setOnClickListener {
+            Log.d("testing", "country name and id in countryfragment is  $countryID $countryName")
             val bundle = Bundle().apply {
                 putLong("countryID", countryID)
                 putString("countryName", countryName)
@@ -96,7 +98,9 @@ class CountryFragment : Fragment() {
                 putFloat("rating", journal.rating)
                 putString("content", journal.content)
                 putString("photoUri", journal.photoUri)
+                putLong("countryID", countryID)
             }
+            Log.d("testing", "country  id in countryfragmnent before passing to viewjournal is  $countryID ")
 
             findNavController().navigate(R.id.viewJournalFragment, bundle)
         }

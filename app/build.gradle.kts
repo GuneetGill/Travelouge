@@ -22,6 +22,7 @@ android {
 
     buildTypes {
         release {
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -75,6 +76,8 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx: $lifecycle_version")
 
+
     implementation(libs.firebase.auth)
     implementation ("com.google.android.gms:play-services-auth:21.2.0")
+
 }

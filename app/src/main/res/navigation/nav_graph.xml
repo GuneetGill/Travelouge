@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     app:startDestination="@id/navigation_home">
 
     <!-- Home Fragment -->
@@ -43,11 +44,13 @@
         android:id="@+id/viewJournalFragment"
         android:name="com.example.travelogue.ui.home.ViewJournalFragment" />
 
+
     <!-- ExpenseFragment -->
     <fragment
         android:id="@+id/ExpenseFragment"
         android:name="com.example.travelogue.ui.home.ExpenseFragment"
-        android:label="Expense Fragment" />
+        android:label="Expense Fragment">
+    </fragment>
 
 
     <!-- Map Fragment -->

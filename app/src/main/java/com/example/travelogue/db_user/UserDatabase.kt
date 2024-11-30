@@ -12,8 +12,10 @@ import com.example.travelogue.table_journal.Journal
 import com.example.travelogue.table_journal.JournalDao
 import com.example.travelogue.doc_table.Document
 import com.example.travelogue.doc_table.DocumentDao
+import com.example.travelogue.expense_table.ExpenseDao
+import com.example.travelogue.expense_table.Expense
 
-@Database(entities = [User::class, Folder::class, Country::class, Journal::class, Document::class], version = 3)
+@Database(entities = [User::class, Folder::class, Country::class, Journal::class, Document::class, Expense::class], version = 12)
 abstract class UserDatabase :
     RoomDatabase() {
     abstract val userDao: UserDao
@@ -21,6 +23,7 @@ abstract class UserDatabase :
     abstract val journalDao: JournalDao
     abstract val countryDao: CountryDao
     abstract val documentDao : DocumentDao
+    abstract val expenseDao: ExpenseDao
 
     companion object {
         //The Volatile keyword guarantees visibility of changes to the INSTANCE variable across threads
