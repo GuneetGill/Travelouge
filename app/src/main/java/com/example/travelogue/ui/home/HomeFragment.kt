@@ -1,6 +1,8 @@
 // HomeFragment.kt
 package com.example.travelogue.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import com.example.travelogue.R
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +13,8 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.travelogue.Globals.PREF_NAME
+import com.example.travelogue.Util
 import com.example.travelogue.databinding.FragmentHomeBinding
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.table_country.CountryDao
@@ -47,7 +51,7 @@ class HomeFragment : Fragment() {
         countryViewModel = ViewModelProvider(requireActivity(), viewModelFactory).get(CountryViewModel::class.java)
 
         // Observe the LiveData from the ViewModel
-        countryViewModel.allCountriesLiveData.observe(viewLifecycleOwner) { countries ->
+        countryViewModel.getCountriesByUserId(Util.getUserId(requireContext())).observe(viewLifecycleOwner) { countries ->
             val countryNames = countries.map { it.countryName }
             countryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, countryNames)
             binding.countryListView.adapter = countryAdapter

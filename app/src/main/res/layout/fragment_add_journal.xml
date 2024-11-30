@@ -1,22 +1,21 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFF9E1"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#FFF9E1">
+    android:padding="16dp">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Journal"
-        android:textSize="24sp"
-        android:fontFamily="sans-serif-medium"
-        android:padding="8dp"
-        android:gravity="center"
+        android:layout_gravity="center_horizontal"
         android:background="#FFEB3B"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Add Journal"
         android:textColor="#000000"
-        android:layout_gravity="center_horizontal" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView"
@@ -36,54 +35,52 @@
         android:id="@+id/ratingBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="1"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:layout_gravity="center_horizontal" />
+        android:numStars="5"
+        android:stepSize="1" />
 
     <Button
         android:id="@+id/btnAddPhotos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Photos and Videos"
-        android:backgroundTint="#D3D3D3"
-        android:textColor="#000000"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:backgroundTint="#D3D3D3"
+        android:text="Add Photos and Videos"
+        android:textColor="#000000" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Write down your thoughts:"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:text="Write down your thoughts:" />
 
     <EditText
         android:id="@+id/editTextThoughts"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:backgroundTint="#D3D3D3"
-        android:hint="Share your experience here"
         android:gravity="top"
+        android:hint="Share your experience here"
         android:padding="8dp" />
+
+    <ImageButton
+        android:id="@+id/speech_text_button"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="#FFF9E1"
+        android:scaleType="centerCrop"
+        android:src="@drawable/speech_text_logo" />
 
     <Button
         android:id="@+id/btnSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
         android:backgroundTint="#80726C"
-        android:textColor="#FFFFFF"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
+        android:text="Submit"
+        android:textColor="#FFFFFF" />
 
-    <!-- New Add Expense Button -->
-    <Button
-        android:id="@+id/btnAddExpense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Expense"
-        android:backgroundTint="#D3D3D3"
-        android:textColor="#000000"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp" />
 </LinearLayout>

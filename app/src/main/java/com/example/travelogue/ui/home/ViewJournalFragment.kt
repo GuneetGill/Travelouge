@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.example.travelogue.R
 import androidx.navigation.fragment.findNavController
-
+import kotlin.random.Random
 
 
 class ViewJournalFragment : Fragment() {
@@ -38,13 +38,22 @@ class ViewJournalFragment : Fragment() {
         val journalPhotoUri = arguments?.getString("photoUri")
 
 
+
         // set title of toolbar to journal title
         (activity as? AppCompatActivity)?.supportActionBar?.title = journalTitle
 
         // set img
         val imageView = view.findViewById<ImageView>(R.id.journalImg)
 //        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
-        imageView.setImageURI(journalPhotoUri!!.toUri())
+ //       imageView.setImageURI(journalPhotoUri!!.toUri())
+
+        journalPhotoUri?.let {
+            imageView.setImageURI(it.toUri())
+        } ?: run {
+            // Fallback if `journalPhotoUri` is null, e.g., set a default image
+            imageView.setImageResource(R.drawable.nuuk_greenland_sample)
+        }
+
 
         // set star rating
         val rating = view.findViewById<RatingBar>(R.id.JournalRating)
@@ -62,7 +71,15 @@ class ViewJournalFragment : Fragment() {
         // Set onclick for expenses button
         val expensesButton = view.findViewById<Button>(R.id.button)
         expensesButton.setOnClickListener {
-            findNavController().navigate(R.id.ExpenseFragment)
+
+            val countryID = arguments?.getLong("countryID") ?: 0L // Default to 0 if null
+
+            val bundle = Bundle().apply {
+                putLong("countryID", countryID)
+            }
+            Log.d("testing", "country and id in viewjournalfragment is  $countryID ")
+            findNavController().navigate(R.id.ExpenseFragment, bundle)
+
         }
 
     }
