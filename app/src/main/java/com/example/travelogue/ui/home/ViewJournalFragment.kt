@@ -16,7 +16,6 @@ import androidx.core.net.toUri
 import com.example.travelogue.R
 import androidx.navigation.fragment.findNavController
 import com.example.travelogue.Util
-import kotlin.random.Random
 
 
 class ViewJournalFragment : Fragment() {
@@ -45,18 +44,14 @@ class ViewJournalFragment : Fragment() {
 
         // set img
         val imageView = view.findViewById<ImageView>(R.id.journalImg)
+//        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
+ //       imageView.setImageURI(journalPhotoUri!!.toUri())
 
-        // if image was added set it, otherwise just use the default image
-        if (!journalPhotoUri.isNullOrEmpty()) {
-            Util.checkPermissions(requireActivity(), arrayOf(
-                Manifest.permission.READ_MEDIA_IMAGES,
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            ))
-            println("debug: journal image detected, setting image")
-            imageView.setImageURI(journalPhotoUri!!.toUri())
-        }
-        else {
-            imageView.setImageResource(R.drawable.default_journal_image)
+        journalPhotoUri?.let {
+            imageView.setImageURI(it.toUri())
+        } ?: run {
+            // Fallback if `journalPhotoUri` is null, e.g., set a default image
+            imageView.setImageResource(R.drawable.nuuk_greenland_sample)
         }
 
         // set star rating
