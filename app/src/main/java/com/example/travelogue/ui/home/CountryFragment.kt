@@ -94,6 +94,7 @@ class CountryFragment : Fragment() {
 
             // for now, pass journalTitle to viewJournalFragment
             val bundle = Bundle().apply {
+                putLong("journalID", journal.journalId)
                 putString("title", journal.title)
                 putFloat("rating", journal.rating)
                 putString("content", journal.content)

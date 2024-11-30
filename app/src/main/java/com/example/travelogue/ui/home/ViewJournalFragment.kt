@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import com.example.travelogue.R
 import androidx.navigation.fragment.findNavController
+import com.example.travelogue.Util
 import kotlin.random.Random
 
 
@@ -32,11 +33,11 @@ class ViewJournalFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // get all the journal data
+        val journalID = arguments?.getLong("journalID")
         val journalTitle = arguments?.getString("title")
         val journalRating = arguments?.getFloat("rating")
         val journalContent = arguments?.getString("content")
         val journalPhotoUri = arguments?.getString("photoUri")
-
 
 
         // set title of toolbar to journal title
@@ -44,16 +45,19 @@ class ViewJournalFragment : Fragment() {
 
         // set img
         val imageView = view.findViewById<ImageView>(R.id.journalImg)
-//        imageView.setImageResource(R.drawable.nuuk_greenland_sample)
- //       imageView.setImageURI(journalPhotoUri!!.toUri())
 
-        journalPhotoUri?.let {
-            imageView.setImageURI(it.toUri())
-        } ?: run {
-            // Fallback if `journalPhotoUri` is null, e.g., set a default image
-            imageView.setImageResource(R.drawable.nuuk_greenland_sample)
+        // if image was added set it, otherwise just use the default image
+        if (!journalPhotoUri.isNullOrEmpty()) {
+            Util.checkPermissions(requireActivity(), arrayOf(
+                Manifest.permission.READ_MEDIA_IMAGES,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ))
+            println("debug: journal image detected, setting image")
+            imageView.setImageURI(journalPhotoUri!!.toUri())
         }
-
+        else {
+            imageView.setImageResource(R.drawable.default_journal_image)
+        }
 
         // set star rating
         val rating = view.findViewById<RatingBar>(R.id.JournalRating)
