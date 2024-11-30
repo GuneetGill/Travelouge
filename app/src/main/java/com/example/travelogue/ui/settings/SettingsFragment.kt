@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.biometric.BiometricPrompt
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.ViewModelProvider
@@ -29,6 +30,10 @@ class SettingsFragment : Fragment() {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private val sharedPrefFile = "com.example.travelogue.PREFERENCE_FILE_KEY"
+
+    // biometric auth stuff
+    private lateinit var promptInfo: BiometricPrompt.PromptInfo
+    private lateinit var biometricPrompt: BiometricPrompt
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,15 +56,28 @@ class SettingsFragment : Fragment() {
             showAddDestinationDialog()
         }
 
+        // biometric prompt
+        val successIntent = Intent(requireContext(), DocumentsActivity::class.java)
+        biometricPrompt = Util.getBiometricPrompt(requireContext(), requireActivity(), successIntent)
+
+        promptInfo = BiometricPrompt.PromptInfo.Builder()
+            .setTitle("Biometric Authentication")
+            .setSubtitle("Authenticate yourself using your biometric credential")
+            .setNegativeButtonText("Go back to settings")
+            .build()
+
         // Set up Documents Button
         val documentsButton: Button = binding.buttonDocuments
-//        documentsButton.setOnClickListener {
-//            val intent = Intent(requireContext(), DocumentsActivity::class.java)
-//            startActivity(intent)
-//        }
 
         documentsButton.setOnClickListener {
-            showPasswordDialog()
+            // check if biometric auth is enabled, if so, prompt user for fingerprint or faceID otherwise get password
+            val userId = Util.getUserId(requireContext())
+            if (Util.isFingerprintEnabled(requireContext(), userId) == true) {
+                biometricPrompt.authenticate(promptInfo)
+            }
+            else {
+                showPasswordDialog()
+            }
         }
 
 

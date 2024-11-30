@@ -104,8 +104,15 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
         btnSubmit.setOnClickListener {
             val rating = ratingBar.rating
             val thoughts = editTextThoughts.text.toString()
+            val title = editJournalTitle.text.toString()
             speechRecognizer.stopListening()
-            if (thoughts.isBlank()) {
+            if (title.isBlank()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Please give your journal a title!",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else if(thoughts.isBlank()) {
                 Toast.makeText(
                     requireContext(),
                     "Please write down your thoughts!",
@@ -115,7 +122,7 @@ class AddJournalFragment : Fragment(R.layout.fragment_add_journal) {
                 // Save the journal to the database
                 val journal = Journal(
                     countryId = countryID!!,
-                    title = editJournalTitle.text.toString(),
+                    title = title,
                     content = thoughts,
                     rating = rating,
                     date = currentDate,
