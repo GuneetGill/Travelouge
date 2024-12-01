@@ -20,6 +20,7 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
+import com.example.travelogue.Util
 import com.example.travelogue.db_user.UserDatabase
 import com.example.travelogue.doc_table.Document
 import com.example.travelogue.doc_table.DocumentDao
@@ -85,7 +86,7 @@ class FolderActivity : AppCompatActivity() {
         viewModel.allDocumentsLiveData.observe(this, Observer { docs ->
 //            arrayAdapter.replace(filteredFolders)
 //            arrayAdapter.notifyDataSetChanged()
-            Log.d("owner id",ownerFolderId.toString())
+            Log.d("owner id", ownerFolderId.toString())
             val filteredDocs = docs.filter { it.folderOwnerId == ownerFolderId }
             arrayAdapter.replace(filteredDocs)
             arrayAdapter.notifyDataSetChanged()
@@ -110,14 +111,21 @@ class FolderActivity : AppCompatActivity() {
 
     private fun initActivityResultHandlers() {
         // Handle camera result
+        val docEditText = EditText(this)
         cameraResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
-                    // Display the captured image
-//                    imageView.setImageURI(tempImageUri)
-                    tempImageUri?.let { uri ->
-                        saveImageToDatabase(uri)
-                    }
+                    AlertDialog.Builder(this)
+                        .setTitle("Enter Document name")
+                        .setView(docEditText)
+                        .setPositiveButton("Save") { _, _ ->
+                            val documentName = docEditText.text.toString().trim()
+                            tempImageUri?.let { uri ->
+                                saveImageToDatabase(uri, documentName)
+                            }
+                        }
+                        .show()
+
 
                     Toast.makeText(this, "Photo captured successfully!", Toast.LENGTH_SHORT).show()
                 } else {
@@ -130,13 +138,21 @@ class FolderActivity : AppCompatActivity() {
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri?.let {
 //                    imageView.setImageURI(it)
-                    Toast.makeText(this, "Image selected successfully!", Toast.LENGTH_SHORT).show()
+                    AlertDialog.Builder(this)
+                        .setTitle("Enter Document name")
+                        .setView(docEditText)
+                        .setPositiveButton("Save") { _, _ ->
+                            val documentName = docEditText.text.toString().trim()
+                            saveImageToDatabase(uri, documentName)
+                            Toast.makeText(this, "Image selected successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                        .show()
                 }
             }
     }
 
     private fun openCamera() {
-        // Create a temporary file for the captured image
+
         val photoFile = File(
             getExternalFilesDir(Environment.DIRECTORY_PICTURES),
             "temp_photo_${System.currentTimeMillis()}.jpg"
@@ -156,35 +172,28 @@ class FolderActivity : AppCompatActivity() {
     }
 
     private fun checkCameraPermissionAndOpenCamera() {
-        if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.CAMERA
-            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
-            openCamera()
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_PERMISSION_REQUEST_CODE
+
+        Util.checkPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
             )
-        }
+        )
+        openCamera()
     }
 
     private fun checkStoragePermissionAndPickFromFiles() {
-        if (ContextCompat.checkSelfPermission(
-                this,
+        Util.checkPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
-            ) == android.content.pm.PackageManager.PERMISSION_GRANTED
-        ) {
-            pickFromFiles()
-        } else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                STORAGE_PERMISSION_REQUEST_CODE
             )
-        }
+        )
+        pickFromFiles()
     }
 
     override fun onRequestPermissionsResult(
@@ -219,10 +228,11 @@ class FolderActivity : AppCompatActivity() {
     }
 
     //save captured photo to the database
-    private fun saveImageToDatabase(uri: Uri) {
+    private fun saveImageToDatabase(uri: Uri, name: String) {
         val imageData = uriToByteArray(uri)
         document.docImgData = imageData
         document.folderOwnerId = intent.getLongExtra("folderId", -1)
+        document.docName = name
         viewModel.insertDocument(document)
     }
 
