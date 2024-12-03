@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import android.util.Patterns
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 
 import androidx.lifecycle.ViewModelProvider
 import com.example.travelogue.R
@@ -41,6 +42,10 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Force Light Mode to see things better
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         enableEdgeToEdge()
         setContentView(R.layout.activity_register)
 
