@@ -58,7 +58,7 @@ class ViewJournalFragment : Fragment() {
         }
         else {
             imageView.setImageResource(R.drawable.default_journal_image)
-
+        }
         // set star rating
         val rating = view.findViewById<RatingBar>(R.id.JournalRating)
         if (journalRating != null) {
@@ -90,5 +90,4 @@ class ViewJournalFragment : Fragment() {
         }
 
     }
-}
 }
