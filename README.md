@@ -41,11 +41,11 @@ Travelogue is a mobile application designed to simplify organizing and preservin
 ### Traveler  
 - **Trip Journaling**: Create detailed travel journals with multimedia uploads.  
 - **Expense Tracking**: Log and view travel expenses for budgeting.  
-- **Map Interaction**: Visualize visited destinations on an interactive world map.  )  
+- **Map Interaction**: Visualize visited destinations on an interactive world map.  
 - **Content Upload**: Add photos, videos, or audio to a travel journal.   
 - **Protected Storage**: Save important travel documents securely.  
 
-## 🚀 Installation and Setup  
+## Installation and Setup  
 
 ### Clone the Repository:  
 ```bash
